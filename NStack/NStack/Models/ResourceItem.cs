@@ -3,10 +3,9 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
 
-namespace NStack
+namespace NStack.Models
 {
-    public class ResourceItem: ConcurrentDictionary<string, string>
+    public class ResourceItem: ConcurrentDictionary<string, object>
     {
-
     }
 }

@@ -2,8 +2,10 @@
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Threading.Tasks;
 
-namespace NStack.Repositories
+namespace NStack.Repositories.Implementation
 {
     public sealed class NstackRepository : INstackRepository
     {
@@ -33,9 +35,18 @@ namespace NStack.Repositories
             });
         }
 
-        IRestResponse<T> INstackRepository.DoRequest<T>(IRestRequest request)
+        async Task<T> INstackRepository.DoRequest<T>(IRestRequest request, Action<HttpStatusCode> errorHandling)
         {
-            return _client.Execute<T>(request);
+            var resp = await _client.ExecuteAsync<T>(request);
+            var code = (int)resp.StatusCode;
+            if (code > 299 || code < 200)
+            {
+                if(errorHandling != null)
+                    errorHandling.Invoke(resp.StatusCode);
+                return null;
+            }
+
+            return resp.Data;
         }
     }
 }

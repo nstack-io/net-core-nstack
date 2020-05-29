@@ -3,13 +3,14 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace NStack.Services
 {
-    public interface INstackLocalizeService<TSection, T> where TSection : ResourceData<T> where T: ResourceItem
+    public interface INstackLocalizeService<TSection> where TSection : ResourceItem
     {
-        DataWrapper<IReadOnlyCollection<Language>> GetLanguages();
+        Task<DataWrapper<List<ResourceData>>> GetLanguages();
 
-        DataMetaWrapper<DataMetaWrapper<TSection>> GetResource(int id);
+        Task<DataMetaWrapper<TSection>> GetResource(int id);
     }
 }
