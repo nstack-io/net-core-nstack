@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RestSharp;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,6 +7,6 @@ namespace NStack.Repositories
 {
     public interface INstackRepository
     {
-        
+        internal IRestResponse<T> DoRequest<T>(IRestRequest request);
     }
 }
