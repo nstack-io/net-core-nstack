@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - master
+      - develop
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.101
+    - name: Install dependencies
+      run: dotnet restore **/*.sln
+    - name: Build
+      run: dotnet build --configuration Release --no-restore **/*.sln
+    - name: Run Unit Test
+      run: dotnet test **/*[Tt]ests/*.csproj --no-restore --verbosity normal
