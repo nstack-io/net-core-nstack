@@ -2,9 +2,7 @@
 using NStack.Repositories;
 using RestSharp;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace NStack.Services.Implementation

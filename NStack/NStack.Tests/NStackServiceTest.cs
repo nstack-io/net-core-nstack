@@ -3,8 +3,6 @@ using NStack.Repositories.Implementation;
 using NStack.Services.Implementation;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace NStack.Tests
 {
@@ -24,9 +22,8 @@ namespace NStack.Tests
                 var temp = service.GetLanguages().Result;
                 var something = temp.Data;
             }
-            catch(Exception e)
+            catch(Exception)
             {
-                var test = 1;
             }
             
             Assert.True(true);
@@ -41,9 +38,8 @@ namespace NStack.Tests
                 var temp = service.GetResource(1208).Result;
                 var something = temp.Data;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                var test = 1;
             }
 
             Assert.True(true);
@@ -55,9 +51,8 @@ namespace NStack.Tests
             {
                 return new NstackConfiguration
                 {
-                    
                 };
-            }            
+            }
         }
     }
 }

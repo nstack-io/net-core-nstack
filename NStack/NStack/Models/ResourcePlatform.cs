@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace NStack.Models
+﻿namespace NStack.Models
 {
     public class ResourcePlatform
     {
