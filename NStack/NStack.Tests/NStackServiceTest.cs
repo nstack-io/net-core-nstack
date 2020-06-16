@@ -26,7 +26,7 @@ namespace NStack.Tests
             {
             }
             
-            Assert.True(true);
+            Assert.IsTrue(true);
         }
 
         [Test]
@@ -42,7 +42,7 @@ namespace NStack.Tests
             {
             }
 
-            Assert.True(true);
+            Assert.IsTrue(true);
         }
 
         private NstackConfiguration Model
