@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 
 namespace NStack.Services
 {
-    public interface INStackLocalizeService<TSection> where TSection : ResourceItem
+    public interface INStackLocalizeService
     {
         Task<DataWrapper<List<ResourceData>>> GetLanguages(NStackPlatform platform);
 
-        Task<DataMetaWrapper<TSection>> GetResource(int id);
+        Task<DataMetaWrapper<TSection>> GetResource<TSection>(int id) where TSection : ResourceItem;
     }
 }

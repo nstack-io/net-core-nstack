@@ -1,8 +1,12 @@
-﻿using NStack.Models;
+﻿using Newtonsoft.Json;
+using NStack.Models;
 using RestSharp;
+using RestSharp.Deserializers;
+using RestSharp.Serialization.Json;
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace NStack.Repositories.Implementation
@@ -27,6 +31,11 @@ namespace NStack.Repositories.Implementation
 
             _client = new RestClient(new Uri(configuration.BaseUrl));
 
+            _client.AddHandler("application/json", () =>
+            {
+                return new JsonSerializer();
+            });
+
             _client.AddDefaultHeader("X-Application-Id", configuration.ApplicationId);
             _client.AddDefaultHeaders(new Dictionary<string, string>
             {
@@ -47,6 +56,14 @@ namespace NStack.Repositories.Implementation
             }
 
             return resp.Data;
+        }
+    }
+
+    public class JsonSerializer : IDeserializer
+    {
+        public virtual T Deserialize<T>(IRestResponse response)
+        {
+            return JsonConvert.DeserializeObject<T>(response.Content);
         }
     }
 }
