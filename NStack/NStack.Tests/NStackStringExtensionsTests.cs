@@ -6,7 +6,7 @@ namespace NStack.Tests
     public class NStackStringExtensionsTests
     {
         [TestCase("PascalCase", "pascalCase")]
-        [TestCase("camalCase", "camalCase")]
+        [TestCase("camelCase", "camelCase")]
         public void FirstCharToLowerTest(string input, string expectedOutput)
         {
             var output = input.FirstCharToLower();
