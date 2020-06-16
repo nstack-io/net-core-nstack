@@ -28,5 +28,7 @@ namespace NStack.Services.Implementation
             var req = new RestRequest($"/api/v2/content/localize/resources/{id}");
             return await _repository.DoRequest<DataMetaWrapper<T>>(req);
         }
+
+        public Task<DataMetaWrapper<ResourceItem>> GetResource(int id) => GetResource<ResourceItem>(id);
     }
 }
