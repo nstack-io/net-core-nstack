@@ -2,7 +2,7 @@
 {
     public class MetaData
     {
-        public Language language { get; set; }
-        public ResourcePlatform platform { get; set; }
+        public Language Language { get; set; }
+        public ResourcePlatform Platform { get; set; }
     }
 }

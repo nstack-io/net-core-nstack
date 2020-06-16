@@ -2,7 +2,7 @@
 {
     public class ResourcePlatform
     {
-        public int id { get; set; }
-        public string slug { get; set; }
+        public int Id { get; set; }
+        public NStackPlatform Slug { get; set; }
     }
 }
