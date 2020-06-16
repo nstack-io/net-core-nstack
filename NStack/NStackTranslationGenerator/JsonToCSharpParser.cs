@@ -53,8 +53,8 @@ namespace NStackTranslationGenerator
             sb.AppendLine("{");
             sb.AppendLine($"{AddTabs(1)}public class {sectionName}Section : ResourceInnerItem");
             sb.AppendLine($"{AddTabs(1)}{{");
-            sb.AppendLine($"{AddTabs(2)}public {sectionName}() : base() {{ }}");
-            sb.AppendLine($"{AddTabs(2)}public {sectionName}(ResourceInnerItem item) : base(item) {{ }}");
+            sb.AppendLine($"{AddTabs(2)}public {sectionName}Section() : base() {{ }}");
+            sb.AppendLine($"{AddTabs(2)}public {sectionName}Section(ResourceInnerItem item) : base(item) {{ }}");
             sb.AppendLine("");
 
             foreach (JProperty entry in innerItem)
