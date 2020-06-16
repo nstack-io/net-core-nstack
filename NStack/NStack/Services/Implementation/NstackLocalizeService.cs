@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NStack.Services.Implementation
 {
-    public class NStackLocalizeService : INStackLocalizeService<ResourceItem>
+    public class NStackLocalizeService : INStackLocalizeService
     {
         private readonly INStackRepository _repository;
         public NStackLocalizeService(INStackRepository repository)
@@ -23,10 +23,12 @@ namespace NStack.Services.Implementation
             return await _repository.DoRequest<DataWrapper<List<ResourceData>>>(req);
         }
 
-        public async Task<DataMetaWrapper<ResourceItem>> GetResource(int id)
+        public async Task<DataMetaWrapper<T>> GetResource<T>(int id) where T : ResourceItem
         {
             var req = new RestRequest($"/api/v2/content/localize/resources/{id}");
-            return await _repository.DoRequest<DataMetaWrapper<ResourceItem>>(req);
+            return await _repository.DoRequest<DataMetaWrapper<T>>(req);
         }
+
+        public Task<DataMetaWrapper<ResourceItem>> GetResource(int id) => GetResource<ResourceItem>(id);
     }
 }
