@@ -25,10 +25,12 @@ namespace NStackTranslationGenerator
             sb.AppendLine("");
 
 
-            foreach (var resourceItem in resourceItemObject)
+            foreach (KeyValuePair<string, JToken> resourceInnerItem in resourceItemObject)
             {
-                string name = $"{char.ToUpper(resourceItem.Key[0])}{resourceItem.Key.Substring(1)}";
+                string name = $"{char.ToUpper(resourceInnerItem.Key[0])}{resourceInnerItem.Key.Substring(1)}";
                 sb.AppendLine($"{AddTabs(2)}public {name}Section {name} => new {name}Section(this[nameof({name}).FirstCharToLower()]);");
+
+                ParseResourceInnerItem(dictionary, resourceInnerItem.Value, targetNamespace);
             }
 
             sb.AppendLine($"{AddTabs(1)}}}");
@@ -37,6 +39,34 @@ namespace NStackTranslationGenerator
             dictionary.Add(resourceItemName, sb.ToString());
 
             return dictionary;
+        }
+
+        private static void ParseResourceInnerItem(IDictionary<string, string> dictionary, JToken innerItem, string targetNameSpace)
+        {
+            string sectionName = $"{char.ToUpper(innerItem.Path[0])}{innerItem.Path.Substring(1)}";
+
+            var sb = new StringBuilder();
+            sb.AppendLine(Includes);
+            sb.AppendLine("");
+
+            sb.AppendLine($"namespace {targetNameSpace}");
+            sb.AppendLine("{");
+            sb.AppendLine($"{AddTabs(1)}public class {sectionName}Section : ResourceInnerItem");
+            sb.AppendLine($"{AddTabs(1)}{{");
+            sb.AppendLine($"{AddTabs(2)}public {sectionName}() : base() {{ }}");
+            sb.AppendLine($"{AddTabs(2)}public {sectionName}(ResourceInnerItem item) : base(item) {{ }}");
+            sb.AppendLine("");
+
+            foreach (JProperty entry in innerItem)
+            {
+                string name = $"{char.ToUpper(entry.Name[0])}{entry.Name.Substring(1)}";
+                sb.AppendLine($"{AddTabs(2)}public string {name} => this[nameof({name}).FirstCharToLower()];");
+            }
+
+            sb.AppendLine($"{AddTabs(1)}}}");
+            sb.AppendLine("}");
+
+            dictionary.Add($"{sectionName}Section.cs", sb.ToString());
         }
 
         private static string AddTabs(int tabs)

@@ -1,4 +1,5 @@
 ﻿using NStack.Extensions;
+using NStack.Models;
 
 namespace NStack.Tests.Translations
 {
