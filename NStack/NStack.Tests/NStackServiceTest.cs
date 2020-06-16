@@ -16,10 +16,10 @@ namespace NStack.Tests
         [Test]
         public void TestConnection()
         {
-            var service = new NstackLocalizeService(new NstackRepository(Model));
+            var service = new NStackLocalizeService(new NStackRepository(Model));
             try
             {
-                var temp = service.GetLanguages().Result;
+                var temp = service.GetLanguages(NStackPlatform.Backend).Result;
                 var something = temp.Data;
             }
             catch(Exception)
@@ -32,7 +32,7 @@ namespace NStack.Tests
         [Test]
         public void TestResources()
         {
-            var service = new NstackLocalizeService(new NstackRepository(Model));
+            var service = new NStackLocalizeService(new NStackRepository(Model));
             try
             {
                 var temp = service.GetResource(1208).Result;
@@ -45,11 +45,11 @@ namespace NStack.Tests
             Assert.IsTrue(true);
         }
 
-        private NstackConfiguration Model
+        private NStackConfiguration Model
         {
             get
             {
-                return new NstackConfiguration
+                return new NStackConfiguration
                 {
                 };
             }

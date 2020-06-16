@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 
 namespace NStack.Services
 {
-    public interface INstackLocalizeService<TSection> where TSection : ResourceItem
+    public interface INStackLocalizeService<TSection> where TSection : ResourceItem
     {
-        Task<DataWrapper<List<ResourceData>>> GetLanguages();
+        Task<DataWrapper<List<ResourceData>>> GetLanguages(NStackPlatform platform);
 
         Task<DataMetaWrapper<TSection>> GetResource(int id);
     }

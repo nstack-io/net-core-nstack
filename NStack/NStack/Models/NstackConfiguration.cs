@@ -1,6 +1,6 @@
 ﻿namespace NStack.Models
 {
-    public class NstackConfiguration
+    public class NStackConfiguration
     {
         public string ApplicationId { get; set; }
         public string ApiKey { get; set; }

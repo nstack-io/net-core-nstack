@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace NStack.Repositories.Implementation
 {
-    public sealed class NstackRepository : INstackRepository
+    public sealed class NStackRepository : INStackRepository
     {
         private readonly RestClient _client;
 
-        public NstackRepository(NstackConfiguration configuration)
+        public NStackRepository(NStackConfiguration configuration)
         {
             if (configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
@@ -35,7 +35,7 @@ namespace NStack.Repositories.Implementation
             });
         }
 
-        async Task<T> INstackRepository.DoRequest<T>(IRestRequest request, Action<HttpStatusCode> errorHandling)
+        async Task<T> INStackRepository.DoRequest<T>(IRestRequest request, Action<HttpStatusCode> errorHandling)
         {
             var resp = await _client.ExecuteAsync<T>(request);
             var code = (int)resp.StatusCode;

@@ -7,25 +7,25 @@ using System.Threading.Tasks;
 
 namespace NStack.Services.Implementation
 {
-    public class NstackLocalizeService : INstackLocalizeService<ResourceItem>
+    public class NStackLocalizeService : INStackLocalizeService<ResourceItem>
     {
-        private readonly INstackRepository _repository;
-        public NstackLocalizeService(INstackRepository repository)
+        private readonly INStackRepository _repository;
+        public NStackLocalizeService(INStackRepository repository)
         {
             if (repository == null)
                 throw new ArgumentNullException(nameof(repository));
             _repository = repository;
         }
 
-        public async Task<DataWrapper<List<ResourceData>>> GetLanguages()
+        public async Task<DataWrapper<List<ResourceData>>> GetLanguages(NStackPlatform platform)
         {
-            var req = new RestRequest("api/v2/content/localize/resources/platforms/backend");
+            var req = new RestRequest($"api/v2/content/localize/resources/platforms/{platform.ToString().ToLower()}");
             return await _repository.DoRequest<DataWrapper<List<ResourceData>>>(req);
         }
 
         public async Task<DataMetaWrapper<ResourceItem>> GetResource(int id)
         {
-            var req = new RestRequest(string.Format("/api/v2/content/localize/resources/{0}", id));
+            var req = new RestRequest($"/api/v2/content/localize/resources/{id}");
             return await _repository.DoRequest<DataMetaWrapper<ResourceItem>>(req);
         }
     }

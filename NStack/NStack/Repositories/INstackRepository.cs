@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace NStack.Repositories
 {
-    public interface INstackRepository
+    public interface INStackRepository
     {
         internal Task<T> DoRequest<T>(IRestRequest request, Action<HttpStatusCode> errorHandling = null) where T : class;
     }
