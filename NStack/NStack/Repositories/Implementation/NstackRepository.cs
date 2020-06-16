@@ -2,11 +2,9 @@
 using NStack.Models;
 using RestSharp;
 using RestSharp.Deserializers;
-using RestSharp.Serialization.Json;
 using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace NStack.Repositories.Implementation

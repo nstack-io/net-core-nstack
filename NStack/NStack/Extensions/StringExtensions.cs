@@ -11,5 +11,7 @@ namespace NStack.Extensions
 
             return $"{char.ToLower(str[0])}{str.Substring(1)}";
         }
+
+        public static bool TranslateToBool(this string boolString) => boolString == "1";
     }
 }
