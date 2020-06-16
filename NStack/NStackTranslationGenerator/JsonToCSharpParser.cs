@@ -9,7 +9,7 @@ namespace NStackTranslationGenerator
     {
         public static IDictionary<string, string> ParseResourceItem(JObject resourceItemObject, string resourceItemName, string targetNamespace)
         {
-            var dictionairy = new Dictionary<string, string>();
+            var dictionary = new Dictionary<string, string>();
 
             var sb = new StringBuilder();
             sb.AppendLine(Includes);
@@ -27,15 +27,16 @@ namespace NStackTranslationGenerator
 
             foreach (var resourceItem in resourceItemObject)
             {
-
+                string name = $"{char.ToUpper(resourceItem.Key[0])}{resourceItem.Key.Substring(1)}";
+                sb.AppendLine($"{AddTabs(2)}public {name}Section {name} => new {name}Section(this[nameof({name}).FirstCharToLower()]);");
             }
 
             sb.AppendLine($"{AddTabs(1)}}}");
             sb.AppendLine("}");
 
-            dictionairy.Add(resourceItemName, sb.ToString());
+            dictionary.Add(resourceItemName, sb.ToString());
 
-            return dictionairy;
+            return dictionary;
         }
 
         private static string AddTabs(int tabs)

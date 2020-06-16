@@ -2,6 +2,8 @@
 using NStack.Models;
 using RestSharp;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -51,6 +53,16 @@ namespace NStackTranslationGenerator
             var jsonToParse = JObject.Parse(match.Groups[1].Value);
 
             var filesToCreate = JsonToCSharpParser.ParseResourceItem(jsonToParse, Options.ClassName, Options.Namespace);
+
+            if(!Directory.Exists(Options.OutputFolder))
+            {
+                Directory.CreateDirectory(Options.OutputFolder);
+            }
+
+            foreach(KeyValuePair<string, string> fileToCreate in filesToCreate)
+            {
+                File.WriteAllText($"{Options.OutputFolder}/{fileToCreate.Key}.cs", fileToCreate.Value);
+            }
         }
     }
 }
