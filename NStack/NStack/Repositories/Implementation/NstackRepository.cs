@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace NStack.Repositories.Implementation
 {
-    public sealed class NStackRepository : INStackRepository
+    public class NStackRepository : INStackRepository
     {
-        private readonly RestClient _client;
+        protected readonly RestClient Client;
 
         public NStackRepository(NStackConfiguration configuration)
         {
@@ -27,15 +27,15 @@ namespace NStack.Repositories.Implementation
             if (string.IsNullOrWhiteSpace(configuration.BaseUrl))
                 throw new ArgumentNullException(configuration.BaseUrl);
 
-            _client = new RestClient(new Uri(configuration.BaseUrl));
+            Client = new RestClient(new Uri(configuration.BaseUrl));
 
-            _client.AddHandler("application/json", () =>
+            Client.AddHandler("application/json", () =>
             {
                 return new JsonSerializer();
             });
 
-            _client.AddDefaultHeader("X-Application-Id", configuration.ApplicationId);
-            _client.AddDefaultHeaders(new Dictionary<string, string>
+            Client.AddDefaultHeader("X-Application-Id", configuration.ApplicationId);
+            Client.AddDefaultHeaders(new Dictionary<string, string>
             {
                 { "X-Application-Id", configuration.ApplicationId },
                 { "X-Rest-Api-Key", configuration.ApiKey }
@@ -44,7 +44,7 @@ namespace NStack.Repositories.Implementation
 
         async Task<T> INStackRepository.DoRequest<T>(IRestRequest request, Action<HttpStatusCode> errorHandling)
         {
-            var resp = await _client.ExecuteAsync<T>(request);
+            var resp = await Client.ExecuteAsync<T>(request);
             var code = (int)resp.StatusCode;
             if (code > 299 || code < 200)
             {
