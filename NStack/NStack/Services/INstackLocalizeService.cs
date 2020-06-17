@@ -1,8 +1,8 @@
-﻿using NStack.Models;
+﻿using NStack.SDK.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace NStack.Services
+namespace NStack.SDK.Services
 {
     public interface INStackLocalizeService
     {

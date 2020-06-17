@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using NStack.Models;
+using NStack.SDK.Models;
 using RestSharp;
 using RestSharp.Deserializers;
 using System;
@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace NStack.Repositories.Implementation
+namespace NStack.SDK.Repositories.Implementation
 {
     public class NStackRepository : INStackRepository
     {

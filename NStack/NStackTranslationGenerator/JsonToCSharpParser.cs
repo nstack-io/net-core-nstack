@@ -82,6 +82,6 @@ namespace NStackTranslationGenerator
             return sb.ToString();
         }
 
-        private static string Includes = $"using NStack.Extensions;{Environment.NewLine}using NStack.Models;";
+        private static string Includes = $"using NStack.SDK.Extensions;{Environment.NewLine}using NStack.SDK.Models;";
     }
 }
