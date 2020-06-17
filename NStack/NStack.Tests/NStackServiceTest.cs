@@ -1,6 +1,6 @@
-﻿using NStack.Models;
-using NStack.Repositories.Implementation;
-using NStack.Services.Implementation;
+﻿using NStack.SDK.Models;
+using NStack.SDK.Repositories.Implementation;
+using NStack.SDK.Services.Implementation;
 using NUnit.Framework;
 using System;
 
