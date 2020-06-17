@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
-using NStack.Models;
+using NStack.SDK.Models;
 using RestSharp;
 using System;
 using System.Collections.Generic;

@@ -1,5 +1,5 @@
-﻿using NStack.Models;
-using NStack.Repositories.Implementation;
+﻿using NStack.SDK.Models;
+using NStack.SDK.Repositories.Implementation;
 using RestSharp;
 using System.Threading.Tasks;
 

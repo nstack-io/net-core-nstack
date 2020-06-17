@@ -1,4 +1,4 @@
-﻿namespace NStack.Models
+﻿namespace NStack.SDK.Models
 {
     public class ResourcePlatform
     {

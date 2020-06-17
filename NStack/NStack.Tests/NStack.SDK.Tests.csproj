@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NStack\NStack.csproj" />
+    <ProjectReference Include="..\NStack\NStack.SDK.csproj" />
   </ItemGroup>
 
 </Project>

@@ -3,7 +3,7 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace NStack.Repositories
+namespace NStack.SDK.Repositories
 {
     public interface INStackRepository
     {

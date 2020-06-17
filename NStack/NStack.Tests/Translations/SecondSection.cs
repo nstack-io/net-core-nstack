@@ -1,5 +1,5 @@
-﻿using NStack.Extensions;
-using NStack.Models;
+﻿using NStack.SDK.Extensions;
+using NStack.SDK.Models;
 
 namespace NStack.Tests.Translations
 {

@@ -1,7 +1,7 @@
 ﻿using Moq;
-using NStack.Models;
-using NStack.Repositories;
-using NStack.Services.Implementation;
+using NStack.SDK.Models;
+using NStack.SDK.Repositories;
+using NStack.SDK.Services.Implementation;
 using NUnit.Framework;
 using RestSharp;
 using System;

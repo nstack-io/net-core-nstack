@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using NStack.Extensions;
+using NStack.SDK.Extensions;
 
 namespace NStack.Tests
 {

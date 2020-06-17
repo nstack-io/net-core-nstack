@@ -1,11 +1,11 @@
-﻿using NStack.Models;
-using NStack.Repositories;
+﻿using NStack.SDK.Models;
+using NStack.SDK.Repositories;
 using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace NStack.Services.Implementation
+namespace NStack.SDK.Services.Implementation
 {
     public class NStackLocalizeService : INStackLocalizeService
     {

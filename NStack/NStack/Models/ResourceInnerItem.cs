@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 
-namespace NStack.Models
+namespace NStack.SDK.Models
 {
     public class ResourceInnerItem: ConcurrentDictionary<string, string>
     {

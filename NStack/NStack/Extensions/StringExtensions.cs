@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NStack.Extensions
+namespace NStack.SDK.Extensions
 {
     public static class StringExtensions
     {

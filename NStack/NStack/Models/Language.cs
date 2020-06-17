@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace NStack.Models
+namespace NStack.SDK.Models
 {
     public class Language
     {
