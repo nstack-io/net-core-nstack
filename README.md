@@ -1,12 +1,82 @@
 # NStack .NET Standard SDK
+Use this SDK to interact with NStack. This SDK contains injectable services to get translations etc. from NStack.
 
-## How to use
+## Configuration
+The configuration is stored in the class `NStackConfiguration` which have three properties:
+- ApiKey
+- ApplicationId
+- BaseUrl
 
-### Configuration
+All information can be found in the NStack portal
 
-### DI setup
+## Interfaces
+Every service is implemented using the interface approach to make dependency injection as smooth as possible.
 
-## Functions
+### INStackRepository
+This interface handles the REST communication with the NStack server. The built in implementation of the interface is `NStackRepository` which takes `NStackConfiguration` as a constructor parameter. The exposed functions are for use by the service layer.
+
+### INStackLocalizeService
+This interface handles all communication regarding translations.
+
+#### GetLanguages
+This function returns all available languages for the platform provided as parameter. The format returned is `DataWrapper&lt;List&lt;ResourceData>>`.
+
+##### Parameters:
+
+| Name | Type |
+| ---- | ---- |
+| platform | NStackPlatform (enum) |
+
+##### ResourceData
+| Property name | Type |
+| ------------- | ---- |
+| Id | int |
+| Url | string |
+| LastUpdatedAt | DateTime |
+| ShouldUpdate | bool |
+| Language | Language |
+
+##### Language
+| Property name | Type |
+| ------------- | ---- |
+| Id | int |
+| Name | string |
+| Locale | string |
+| LanguageDirection | LanguageDirection (enum) |
+| IsDefault | bool |
+| IsBestFit | bool |
+
+#### GetResource
+This function returns translations for a language. The function by default returns a `ResourceItem`, but takes a type if you have a class which inherits `ResourceItem` to get your language file strongly typed.
+
+##### Parameters
+| Property name | Type |
+| ------------- | ---- |
+| id | int |
+
+##### ResourceItem
+ResourceItem is an implementation of `ConcurrentDictionary<string, ResourceInnerItem>` which can be extended to get strongly typed sections for your translation. The `Translation generator` tool can be used to generate these files automatically.
+
+This class holds the translation sections and can be used by either extending the class or just use the class as is as a normal dictionary e.g. `item["mySection"]`.
+
+##### ResourceInnerItem
+ResourceInnerItem is an implemenation of `ConcurrentDictionary<string, string>` which can be extended in the same manner as `ResourceItem`. This class holds the actual translations and can be used by either extending the class or just use the class as is as a normal dictionary e.g. `innerItem["myTranslation"]`.
+
+## DI setup
+The SDK is built with DI support in mind and can be quickly set up in your `startup.cs` file in `ConfigureServices`:
+
+```C#
+services.AddSingleton<NStackConfiguration>(r => new NStackConfiguration
+{
+    ApiKey = "MyApiKey",
+    ApplicationId = "MyApplicationId",
+    BaseUrl = "MyBaseUrl"
+});
+services.AddTransient<INStackRepository, NStackRepository>();
+services.AddTransient<INStackLocalizeService, NStackLocalizeService>();
+```
+
+Best practice is to not hard code the configuration values but to fetch them from your application settings.
 
 ## Translation generator
 The translation generator is a tool which can access your NStack translation and generate C# classes based on the JSON response from a specified resource.
@@ -19,10 +89,10 @@ The parameters are listed below and can also be viewed by using the `--help` for
 | Short name | Long name | Required | Default value | Description |
 | ---------- | --------- | :------: | ------------- | ----------- |
 | -c | --className | | Translation | The name of the class holding the translation sections |
-| -i | --applicationId | :heavy_check_mark: | N/A | The ID for you NStack application |
-| -k | --apiKey | :heavy_check_mark: | N/A | The API key for your NStack integration |
-| -n | --namespace | :heavy_check_mark: | N/A | The namespace for the created classes |
+| -i | --applicationId | :heavy_check_mark: |  | The ID for you NStack application |
+| -k | --apiKey | :heavy_check_mark: |  | The API key for your NStack integration |
+| -n | --namespace | :heavy_check_mark: |  | The namespace for the created classes |
 | -o | --output | | ./output | The output folder for the generated classes |
 | -s | --showJson | | false | Show the fetched JSON from NStack in the console? |
-| -t | --translationId | :heavy_check_mark: | N/A | The ID of the translation to generate the classes from |
+| -t | --translationId | :heavy_check_mark: |  | The ID of the translation to generate the classes from |
 | -u | --url | | https://nstack.io | The base url of the NStack service |
