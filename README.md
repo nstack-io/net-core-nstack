@@ -19,7 +19,7 @@ The parameters are listed below and can also be viewed by using the `--help` for
 | Short name | Long name | Required | Default value | Description |
 | ---------- | --------- | ---------| ------------- | ----------- |
 | -c | --className | | Translation | The name of the class holding the translation sections |
-| -i | --applicationId | [x] | N/A | The ID for you NStack application |
+| -i | --applicationId | :heavy_check_mark: | N/A | The ID for you NStack application |
 | -k | --apiKey | [x] | N/A | The API key for your NStack integration |
 | -n | --namespace | [x] | N/A | The namespace for the created classes |
 | -o | --output | | ./output | The output folder for the generated classes |
