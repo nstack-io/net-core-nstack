@@ -66,7 +66,7 @@ namespace NStackTranslationGenerator
             sb.AppendLine($"{AddTabs(1)}}}");
             sb.AppendLine("}");
 
-            dictionary.Add($"{sectionName}Section.cs", sb.ToString());
+            dictionary.Add($"{sectionName}Section", sb.ToString());
         }
 
         private static string AddTabs(int tabs)
