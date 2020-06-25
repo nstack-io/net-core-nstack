@@ -1,0 +1,34 @@
+name: Publish to NuGet
+
+on:
+  push:
+    branches:
+    - master
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.301
+      env:
+        NUGET_AUTH_TOKEN: ${{secrets.GITHUBTOKEN}}
+      
+    - name: Install dependencies
+      run: dotnet restore
+      
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+
+    - name: Generate NuGet package
+      run: |  
+        cd NStack/NStack
+        dotnet pack -c Release -o out  
+
+    - name: Push generated package to GitHub registry
+      run: dotnet nuget push ./NStack/NStack/out/*.nupkg --skip-duplicate --no-symbols true
