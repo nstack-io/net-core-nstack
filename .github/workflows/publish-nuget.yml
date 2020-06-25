@@ -20,15 +20,15 @@ jobs:
         NUGET_AUTH_TOKEN: ${{secrets.GITHUBTOKEN}}
       
     - name: Install dependencies
-      run: dotnet restore
+      run: dotnet restore **/*.sln
       
     - name: Build
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build --configuration Release --no-restore **/*.sln
 
     - name: Generate NuGet package
       run: |  
         cd NStack/NStack
-        dotnet pack -c Release -o out  
+        dotnet pack --configuration Release --output out --no-build  
 
     - name: Push generated package to GitHub registry
       run: dotnet nuget push ./NStack/NStack/out/*.nupkg --skip-duplicate --no-symbols true
