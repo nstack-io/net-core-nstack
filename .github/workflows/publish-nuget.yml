@@ -28,5 +28,5 @@ jobs:
         cd NStack/NStack
         dotnet pack --configuration Release --output out --no-build  
 
-    - name: Push generated package to GitHub registry
+    - name: Push generated package to NuGet.org
       run: dotnet nuget push ./NStack/NStack/out/*.nupkg --skip-duplicate --no-symbols true --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
