@@ -1,4 +1,4 @@
-name: .NET Core
+name: Publish to NuGet
 
 on:
   push:
@@ -17,7 +17,7 @@ jobs:
       with:
         dotnet-version: 3.1.301
       env:
-        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        NUGET_AUTH_TOKEN: ${{secrets.GITHUBTOKEN}}
       
     - name: Install dependencies
       run: dotnet restore
