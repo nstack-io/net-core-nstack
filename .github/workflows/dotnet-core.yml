@@ -25,5 +25,5 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore NStack/NStack.sln
 
-    - name: Run Unit Test
+    - name: Run unit tests
       run: dotnet test NStack/NStack.sln --no-restore --verbosity normal
