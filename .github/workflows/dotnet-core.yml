@@ -20,10 +20,10 @@ jobs:
         dotnet-version: 3.1.301
 
     - name: Install dependencies
-      run: dotnet restore **/*.sln
+      run: dotnet restore NStack/NStack.sln
 
     - name: Build
-      run: dotnet build --configuration Release --no-restore **/*.sln
+      run: dotnet build --configuration Release --no-restore NStack/NStack.sln
 
     - name: Run Unit Test
       run: dotnet test **/*[Tt]ests/*.csproj --no-restore --verbosity normal
