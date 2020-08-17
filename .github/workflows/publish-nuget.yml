@@ -4,10 +4,12 @@ on:
   push:
     branches:
     - master
+    paths:
+    - 'NStack/NStack/**'
 
 jobs:
   publish:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -18,10 +20,10 @@ jobs:
         dotnet-version: 3.1.301
       
     - name: Install dependencies
-      run: dotnet restore **/*.sln
+      run: dotnet restore NStack/NStack.sln
       
     - name: Build
-      run: dotnet build --configuration Release --no-restore **/*.sln
+      run: dotnet build --configuration Release --no-restore NStack/NStack.sln
 
     - name: Generate NuGet package
       run: |  

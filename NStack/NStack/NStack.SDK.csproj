@@ -14,7 +14,7 @@
 	  <PackageIcon>Nodes logo.png</PackageIcon>
 	  <AssemblyName>NStack.SDK</AssemblyName>
 	  <RootNamespace>NStack.SDK</RootNamespace>
-	  <Version>1.0.0</Version>
+	  <Version>1.0.1</Version>
 	  <Description>Use this SDK to interact with NStack. This SDK contains injectable services to get translations etc. from NStack.</Description>
 	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
