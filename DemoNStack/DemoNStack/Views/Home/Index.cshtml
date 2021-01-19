@@ -1,11 +1,11 @@
-﻿@model NStack.SDK.Models.ResourceItem
+﻿@model Translation
 @{
     ViewData["Title"] = "Home Page";
 }
 
     <div class="text-center">
-        <h1 class="display-4">@Model["secondSection"]["first"]</h1>
-        <p>@Model["default"]["text"]</p>
-        <h1 class="display-4">@Model["secondSection"]["second"]</h1>
+        <h1 class="display-4">@Model.SecondSection.First</h1>
+        <p>@Model.Default.Text</p>
+        <h1 class="display-4">@Model.SecondSection.Second</h1>
         <button></button>
     </div>

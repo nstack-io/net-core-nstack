@@ -1,5 +1,3 @@
-using System;
-
 namespace DemoNStack.Models
 {
     public class ErrorViewModel

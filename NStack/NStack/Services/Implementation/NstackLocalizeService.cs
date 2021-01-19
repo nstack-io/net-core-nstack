@@ -3,6 +3,7 @@ using NStack.SDK.Repositories;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace NStack.SDK.Services.Implementation
@@ -14,8 +15,20 @@ namespace NStack.SDK.Services.Implementation
         {
             if (repository == null)
                 throw new ArgumentNullException(nameof(repository));
+
             _repository = repository;
         }
+
+        public async Task<DataMetaWrapper<TSection>> GetDefaultResource<TSection>(NStackPlatform platform) where TSection : ResourceItem
+        {
+            var languages = await GetLanguages(platform);
+
+            var defaultLanguage = languages.Data.First(l => l.Language.IsDefault);
+
+            return await GetResource<TSection>(defaultLanguage.Id);
+        }
+
+        public Task<DataMetaWrapper<ResourceItem>> GetDefaultResource(NStackPlatform platform) => GetDefaultResource<ResourceItem>(platform);
 
         public async Task<DataWrapper<List<ResourceData>>> GetLanguages(NStackPlatform platform)
         {
@@ -23,12 +36,30 @@ namespace NStack.SDK.Services.Implementation
             return await _repository.DoRequest<DataWrapper<List<ResourceData>>>(req);
         }
 
-        public async Task<DataMetaWrapper<T>> GetResource<T>(int id) where T : ResourceItem
+        public async Task<DataMetaWrapper<TSection>> GetResource<TSection>(int id) where TSection : ResourceItem
         {
             var req = new RestRequest($"/api/v2/content/localize/resources/{id}");
-            return await _repository.DoRequest<DataMetaWrapper<T>>(req);
+            var temp = await _repository.DoRequest<DataMetaWrapper<TSection>>(req);
+            return await _repository.DoRequest<DataMetaWrapper<TSection>>(req);
         }
 
         public Task<DataMetaWrapper<ResourceItem>> GetResource(int id) => GetResource<ResourceItem>(id);
+
+        public async Task<DataMetaWrapper<TSection>> GetResource<TSection>(string locale, NStackPlatform platform) where TSection : ResourceItem
+        {
+            if (locale == null)
+                throw new ArgumentNullException(locale);
+
+            var languages = await GetLanguages(platform);
+
+            var localeLanguage = languages.Data.FirstOrDefault(l => l.Language.Locale.Equals(locale));
+
+            if (localeLanguage == null)
+                return null;
+
+            return await GetResource<TSection>(localeLanguage.Id);
+        }
+
+        public Task<DataMetaWrapper<ResourceItem>> GetResource(string locale, NStackPlatform platform) => GetResource<ResourceItem>(locale, platform);
     }
 }

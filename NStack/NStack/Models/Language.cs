@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace NStack.SDK.Models
 {
@@ -7,11 +8,11 @@ namespace NStack.SDK.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string Locale { get; set; }
-        [JsonConverter(typeof(JsonStringEnumConverter))]
+        [JsonConverter(typeof(StringEnumConverter))]
         public LanguageDirection Direction { get; set; }
-        [JsonPropertyName("is_default")]
+        [JsonProperty("is_default")]
         public bool IsDefault { get; set; }
-        [JsonPropertyName("is_best_fit")]
+        [JsonProperty("is_best_fit")]
         public bool IsBestFit { get; set; }
 
         public override string ToString() => $"{Name} ({Locale})";

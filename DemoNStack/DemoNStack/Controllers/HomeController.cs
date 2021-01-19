@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using DemoNStack.Models;
 using NStack.SDK.Services;
 
@@ -14,18 +12,15 @@ namespace DemoNStack.Controllers
     {
         private INStackLocalizeService NStackLocalizeService { get; }
 
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger, INStackLocalizeService nStackLocalizeService)
+        public HomeController(INStackLocalizeService nStackLocalizeService)
         {
-            _logger = logger;
-            NStackLocalizeService = nStackLocalizeService;
+            NStackLocalizeService = nStackLocalizeService ?? throw new ArgumentNullException(nameof(nStackLocalizeService));
         }
 
         public async Task<IActionResult> Index()
         {
             var langs = await NStackLocalizeService.GetLanguages(NStack.SDK.Models.NStackPlatform.Backend);
-            var res = await NStackLocalizeService.GetResource(langs.Data.First().Id);
+            var res = await NStackLocalizeService.GetResource<Translation>(langs.Data.First().Id);
             
             return View(res.Data);
         }
