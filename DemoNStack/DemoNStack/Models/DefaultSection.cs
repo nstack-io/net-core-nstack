@@ -12,5 +12,6 @@ namespace DemoNStack.Models
         public string Html => this[nameof(Html).FirstCharToLower()];
         public string BoolValue => this[nameof(BoolValue).FirstCharToLower()];
         public string BoolValueFalse => this[nameof(BoolValueFalse).FirstCharToLower()];
+        public string Language => this[nameof(Language).FirstCharToLower()];
     }
 }

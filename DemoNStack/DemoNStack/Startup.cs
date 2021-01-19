@@ -24,6 +24,7 @@ namespace DemoNStack
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddMemoryCache();
 
             services.AddSingleton<NStackConfiguration>(r => new NStackConfiguration
             {
