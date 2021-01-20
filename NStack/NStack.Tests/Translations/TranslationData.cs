@@ -9,6 +9,5 @@ namespace NStack.Tests.Translations
         public TranslationData(ResourceItem item) : base(item) { }
 
         public DefaultSection Default => new DefaultSection(this[nameof(Default).FirstCharToLower()]);
-        public SecondSection SecondSection => new SecondSection(this[nameof(SecondSection).FirstCharToLower()]);
     }
 }

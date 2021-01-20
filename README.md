@@ -23,9 +23,9 @@ This function returns all available languages for the platform provided as param
 
 ##### Parameters:
 
-| Name | Type |
-| ---- | ---- |
-| platform | NStackPlatform (enum) |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| platform | NStackPlatform (enum) | Which platform to get the languages for |
 
 ##### ResourceData
 | Property name | Type |
@@ -49,10 +49,17 @@ This function returns all available languages for the platform provided as param
 #### GetResource
 This function returns translations for a language. The function by default returns a `ResourceItem`, but takes a type if you have a class which inherits `ResourceItem` to get your language file strongly typed.
 
+This function has two overloads: one for a specific ID and one for locale.
+
 ##### Parameters
-| Property name | Type |
-| ------------- | ---- |
-| id | int |
+| Property name | Type | Description |
+| ------------- | ---- | ----------- |
+| id | int | The ID of the translation to get |
+
+| Property name | Type | Description |
+| ------------- | ---- | ----------- |
+| locale | string | The ISO code for the language to get e.g. `en-GB` |
+| platform | NStackPlatform (enum) | Which platform to get the translation for |
 
 ##### ResourceItem
 ResourceItem is an implementation of `ConcurrentDictionary<string, ResourceInnerItem>` which can be extended to get strongly typed sections for your translation. The `Translation generator` tool can be used to generate these files automatically.
@@ -61,6 +68,14 @@ This class holds the translation sections and can be used by either extending th
 
 ##### ResourceInnerItem
 ResourceInnerItem is an implemenation of `ConcurrentDictionary<string, string>` which can be extended in the same manner as `ResourceItem`. This class holds the actual translations and can be used by either extending the class or just use the class as is as a normal dictionary e.g. `innerItem["myTranslation"]`.
+
+### GetDefaultResource
+This functions returns the default language. The function by default returns a `ResourceItem`, but takes a type if you have a class which inherits `ResourceItem` to get your language file strongly typed.
+
+#### Parameters
+| Property name | Type | Description |
+| ------------- | ---- | ----------- |
+| platform | NStackPlatform (enum) | Which platform to get the translation for |
 
 ## DI setup
 The SDK is built with DI support in mind and can be quickly set up in your `startup.cs` file in `ConfigureServices`:
