@@ -7,19 +7,39 @@ on:
       - develop
 
 jobs:
-  build:
-
+  BuildNuGet:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
+
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.301
+        dotnet-version: 3.1.403
+
     - name: Install dependencies
-      run: dotnet restore **/*.sln
+      run: dotnet restore NStack/*.sln
+
     - name: Build
-      run: dotnet build --configuration Release --no-restore **/*.sln
+      run: dotnet build --configuration Release --no-restore NStack/*.sln
+
     - name: Run Unit Test
-      run: dotnet test **/*[Tt]ests/*.csproj --no-restore --verbosity normal
+      run: dotnet test NStack/**/*[Tt]ests/*.csproj --no-restore --verbosity normal
+
+  BuildDemoSite:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.403
+
+    - name: Install dependencies
+      run: dotnet restore DemoNStack/*.sln
+
+    - name: Build
+      run: dotnet build --configuration Release --no-restore DemoNStack/*.sln

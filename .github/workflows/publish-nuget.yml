@@ -15,13 +15,13 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.301
+        dotnet-version: 3.1.403
       
     - name: Install dependencies
-      run: dotnet restore **/*.sln
+      run: dotnet restore NStack/*.sln
       
     - name: Build
-      run: dotnet build --configuration Release --no-restore **/*.sln
+      run: dotnet build --configuration Release --no-restore NStack/*.sln
 
     - name: Generate NuGet package
       run: |  
