@@ -29,7 +29,7 @@ jobs:
       run: dotnet test NStack/NStack.sln --no-restore --verbosity normal
 
   BuildDemoSite:
-      runs-on: ubuntu-latest
+      runs-on: windows-latest
 
       steps:
       - uses: actions/checkout@v2
