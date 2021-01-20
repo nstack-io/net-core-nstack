@@ -1,27 +1,26 @@
-﻿using System;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using DemoNStack.Extensions;
 using DemoNStack.Models;
-using NStack.SDK.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using NStack.SDK.Models;
-using DemoNStack.Extensions;
+using NStack.SDK.Services;
+using System;
+using System.Threading.Tasks;
 
-namespace DemoNStack.Controllers
+namespace DemoNStack.ViewComponents
 {
-    public class HomeController : Controller
+    public class NavbarViewComponent : ViewComponent
     {
         private INStackLocalizeService NStackLocalizeService { get; }
         private IMemoryCache Cache { get; }
 
-        public HomeController(INStackLocalizeService nStackLocalizeService, IMemoryCache memoryCache)
+        public NavbarViewComponent(INStackLocalizeService nStackLocalizeService, IMemoryCache memoryCache)
         {
             NStackLocalizeService = nStackLocalizeService ?? throw new ArgumentNullException(nameof(nStackLocalizeService));
             Cache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IViewComponentResult> InvokeAsync()
         {
             var res = await Cache.GetOrCreateAsync($"nstack-translation-{Request.GetCurrentLanguage()}", async e =>
             {
@@ -34,14 +33,8 @@ namespace DemoNStack.Controllers
 
                 return res;
             });
-            
-            return View(res.Data);
-        }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(res.Data);
         }
     }
 }
