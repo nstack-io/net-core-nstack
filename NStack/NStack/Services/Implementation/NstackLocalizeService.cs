@@ -11,7 +11,6 @@ namespace NStack.SDK.Services.Implementation
     public class NStackLocalizeService : INStackLocalizeService
     {
         private readonly INStackRepository _repository;
-
         public NStackLocalizeService(INStackRepository repository)
         {
             if (repository == null)
