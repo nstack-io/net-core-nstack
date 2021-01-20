@@ -26,11 +26,17 @@ namespace DemoNStack
             services.AddControllersWithViews();
             services.AddMemoryCache();
 
-            services.AddSingleton<NStackConfiguration>(r => new NStackConfiguration
+            
+            services.AddSingleton<NStackConfiguration>(r =>
             {
-                ApiKey = "qd1GiPnq8sJuChbFxjOQxV9t1AN71oIMBuWF",
-                ApplicationId = "9vJhjXzSBUxBOuQx2B2mFIZSoa2aK4UJzt7y",
-                BaseUrl = "https://nstack.io"
+                var section = Configuration.GetSection("NStack");
+
+                return new NStackConfiguration
+                {
+                    ApiKey = section.GetValue<string>("ApiKey"),
+                    ApplicationId = section.GetValue<string>("ApplicationId"),
+                    BaseUrl = section.GetValue<string>("BaseUrl")
+                };
             });
             services.AddTransient<INStackRepository, NStackRepository>();
             services.AddTransient<INStackLocalizeService, NStackLocalizeService>();
