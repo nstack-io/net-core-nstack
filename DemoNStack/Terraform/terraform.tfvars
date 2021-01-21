@@ -1,0 +1,2 @@
+nstack_api_key = "qd1GiPnq8sJuChbFxjOQxV9t1AN71oIMBuWF"
+nstack_application_id = "9vJhjXzSBUxBOuQx2B2mFIZSoa2aK4UJzt7y"

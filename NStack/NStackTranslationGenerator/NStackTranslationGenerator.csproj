@@ -4,6 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <PackageIcon>Nodes logo.png</PackageIcon>
+    <Version>1.1.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
