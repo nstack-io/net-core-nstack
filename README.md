@@ -111,3 +111,7 @@ The parameters are listed below and can also be viewed by using the `--help` for
 | -s | --showJson | | false | Show the fetched JSON from NStack in the console? |
 | -t | --translationId | :heavy_check_mark: |  | The ID of the translation to generate the classes from |
 | -u | --url | | https://nstack.io | The base url of the NStack service |
+
+
+## Demo site
+The demo site is available on [https://nstack-dotnetsdkdemo.azurewebsites.net/](https://nstack-dotnetsdkdemo.azurewebsites.net/). The infrastructure has been defined in Terraform if you want to set up your own version quickly.
