@@ -74,5 +74,21 @@ namespace NStack.SDK.Services.Implementation
 
             return _repository.DoRequest<DataWrapper<TermsWithContent>>(request);
         }
+
+        public Task<TermsReadConfirmation> MarkRead(int termsId, string userId, string language)
+        {
+            if (termsId < 0)
+                throw new ArgumentException($"Expected an ID of 0 or higher. Got {termsId}", nameof(termsId));
+            if (userId == null)
+                throw new ArgumentNullException(nameof(userId));
+            if (language == null)
+                throw new ArgumentNullException(nameof(language));
+
+            var request = new RestRequest($"api/v2/content/terms/versions/{termsId}/views", Method.POST);
+            request.AddQueryParameter("guid", userId);
+            request.AddHeader("Accept-Language", language);
+
+            return _repository.DoRequest<TermsReadConfirmation>(request);
+        }
     }
 }
