@@ -16,7 +16,7 @@ namespace NStack.SDK.Services.Implementation
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        public async Task<DataWrapper<IEnumerable<TermsEntry>>> GetAllTerms(string language)
+        public Task<DataWrapper<IEnumerable<TermsEntry>>> GetAllTerms(string language)
         {
             if (language == null)
                 throw new ArgumentNullException(nameof(language));
@@ -24,10 +24,26 @@ namespace NStack.SDK.Services.Implementation
             var request = new RestRequest("api/v2/content/terms", Method.GET);
             request.AddHeader("Accept-Language", language);
 
-            return await _repository.DoRequest<DataWrapper<IEnumerable<TermsEntry>>>(request);
+            return _repository.DoRequest<DataWrapper<IEnumerable<TermsEntry>>>(request);
         }
 
-        public async Task<DataWrapper<Terms>> GetNewestTerms(string termsId, string userId, string language)
+        public Task<DataWrapper<IEnumerable<Terms>>> GetTermsVersions(string termsId, string userId, string language)
+        {
+            if (termsId == null)
+                throw new ArgumentNullException(nameof(termsId));
+            if (userId == null)
+                throw new ArgumentNullException(nameof(userId));
+            if (language == null)
+                throw new ArgumentNullException(nameof(language));
+
+            var request = new RestRequest($"api/v2/content/terms/{termsId}/versions");
+            request.AddQueryParameter("guid", userId);
+            request.AddHeader("Accept-Language", language);
+
+            return _repository.DoRequest<DataWrapper<IEnumerable<Terms>>>(request);
+        }
+
+        public Task<DataWrapper<TermsWithContent>> GetNewestTerms(string termsId, string userId, string language)
         {
             if (termsId == null)
                 throw new ArgumentNullException(nameof(termsId));
@@ -40,7 +56,7 @@ namespace NStack.SDK.Services.Implementation
             request.AddQueryParameter("guid", userId);
             request.AddHeader("Accept-Language", language);
 
-            return await _repository.DoRequest<DataWrapper<Terms>>(request);
+            return _repository.DoRequest<DataWrapper<TermsWithContent>>(request);
         }
     }
 }
