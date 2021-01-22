@@ -16,7 +16,7 @@ namespace NStack.SDK.Models
         {
             get
             {
-                if(!string.IsNullOrWhiteSpace(PublishedAtString) &&
+                if (!string.IsNullOrWhiteSpace(PublishedAtString) &&
                     DateTime.TryParseExact(PublishedAtString, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime publishedAt))
                 {
                     return publishedAt;
@@ -27,6 +27,5 @@ namespace NStack.SDK.Models
         }
         [JsonProperty("has_viewed")]
         public bool HasViewed { get; set; }
-        public TermsContent Content { get; set; }
     }
 }
