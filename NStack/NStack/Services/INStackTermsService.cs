@@ -41,5 +41,15 @@ namespace NStack.SDK.Services
         /// <exception cref="ArgumentException"></exception>
         /// <exception cref="ArgumentNullException"></exception>
         Task<DataWrapper<TermsWithContent>> GetTerms(int termsId, string userId, string language);
+
+        /// <summary>
+        /// Mark terms as read.
+        /// </summary>
+        /// <param name="termsId">The ID of the terms to mark as read.</param>
+        /// <param name="userId">The unique ID of the user who has read the terms.</param>
+        /// <param name="language">The ISO language code of the terms to mark as read e.g. en-GB.</param>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="ArgumentNullException"></exception>
+        Task<bool> MarkRead(int termsId, string userId, string language);
     }
 }

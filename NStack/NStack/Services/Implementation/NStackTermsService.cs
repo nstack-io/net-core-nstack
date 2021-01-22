@@ -1,4 +1,5 @@
-﻿using NStack.SDK.Models;
+﻿using Newtonsoft.Json;
+using NStack.SDK.Models;
 using NStack.SDK.Repositories;
 using RestSharp;
 using System;
@@ -73,6 +74,30 @@ namespace NStack.SDK.Services.Implementation
             request.AddHeader("Accept-Language", language);
 
             return _repository.DoRequest<DataWrapper<TermsWithContent>>(request);
+        }
+
+        public async Task<bool> MarkRead(int termsId, string userId, string language)
+        {
+            if (termsId < 0)
+                throw new ArgumentException($"Expected an ID of 0 or higher. Got {termsId}", nameof(termsId));
+            if (userId == null)
+                throw new ArgumentNullException(nameof(userId));
+            if (language == null)
+                throw new ArgumentNullException(nameof(language));
+
+            var request = new RestRequest($"api/v2/content/terms/versions/views", Method.POST);
+            request.AddJsonBody(new
+            {
+                term_version_id = termsId,
+                guid = userId,
+                identifier = userId,
+                locale = language
+            }, "application/x-www-form-urlencoded");
+            request.AddHeader("Accept-Language", language);
+
+            var data = await _repository.DoRequest<object>(request);
+
+            return data != null;
         }
     }
 }
