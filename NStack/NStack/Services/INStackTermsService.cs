@@ -1,11 +1,19 @@
 ﻿using NStack.SDK.Models;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace NStack.SDK.Services
 {
     public interface INStackTermsService
     {
+        /// <summary>
+        /// Get a list of the available terms for the given <paramref name="language"/>.
+        /// </summary>
+        /// <param name="language">The ISO language code to get the list of terms for e.g. en-GB.</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        Task<DataWrapper<IEnumerable<TermsEntry>>> GetAllTerms(string language);
+
         /// <summary>
         /// Get the latest version of the terms with the given <paramref name="termsId"/>.
         /// </summary>
