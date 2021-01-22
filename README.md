@@ -8,6 +8,12 @@ The SDK is available from the NuGet gallery. The package is called `NStack.SDK`,
 Install-Package NStack.SDK
 ```
 
+Or if you're using the dotnet CLI, run the following command:
+
+```PowerShell
+dotnet add package NStack.SDK
+```
+
 ## Configuration
 The configuration is stored in the class `NStackConfiguration` which have three properties:
 - ApiKey
