@@ -1,6 +1,13 @@
 # NStack .NET Standard SDK
 Use this SDK to interact with NStack. This SDK contains injectable services to get translations etc. from NStack.
 
+## Installation
+The SDK is available from the NuGet gallery. The package is called `NStack.SDK`, you can install it by searching for it or by running the following command in the Package Manager Console
+
+```PowerShell
+Install-Package NStack.SDK
+```
+
 ## Configuration
 The configuration is stored in the class `NStackConfiguration` which have three properties:
 - ApiKey
