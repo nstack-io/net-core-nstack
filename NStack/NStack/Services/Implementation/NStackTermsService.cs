@@ -1,4 +1,5 @@
-﻿using NStack.SDK.Models;
+﻿using Newtonsoft.Json;
+using NStack.SDK.Models;
 using NStack.SDK.Repositories;
 using RestSharp;
 using System;
@@ -75,7 +76,7 @@ namespace NStack.SDK.Services.Implementation
             return _repository.DoRequest<DataWrapper<TermsWithContent>>(request);
         }
 
-        public Task<TermsReadConfirmation> MarkRead(int termsId, string userId, string language)
+        public async Task<bool> MarkRead(int termsId, string userId, string language)
         {
             if (termsId < 0)
                 throw new ArgumentException($"Expected an ID of 0 or higher. Got {termsId}", nameof(termsId));
@@ -84,11 +85,19 @@ namespace NStack.SDK.Services.Implementation
             if (language == null)
                 throw new ArgumentNullException(nameof(language));
 
-            var request = new RestRequest($"api/v2/content/terms/versions/{termsId}/views", Method.POST);
-            request.AddQueryParameter("guid", userId);
+            var request = new RestRequest($"api/v2/content/terms/versions/views", Method.POST);
+            request.AddJsonBody(new
+            {
+                term_version_id = termsId,
+                guid = userId,
+                identifier = userId,
+                locale = language
+            }, "application/x-www-form-urlencoded");
             request.AddHeader("Accept-Language", language);
 
-            return _repository.DoRequest<TermsReadConfirmation>(request);
+            var data = await _repository.DoRequest<object>(request);
+
+            return data != null;
         }
     }
 }

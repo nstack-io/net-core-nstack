@@ -50,6 +50,6 @@ namespace NStack.SDK.Services
         /// <param name="language">The ISO language code of the terms to mark as read e.g. en-GB.</param>
         /// <exception cref="ArgumentException"></exception>
         /// <exception cref="ArgumentNullException"></exception>
-        Task<TermsReadConfirmation> MarkRead(int termsId, string userId, string language);
+        Task<bool> MarkRead(int termsId, string userId, string language);
     }
 }
