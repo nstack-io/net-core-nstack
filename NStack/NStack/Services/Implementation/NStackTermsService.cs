@@ -17,6 +17,13 @@ namespace NStack.SDK.Services.Implementation
 
         public async Task<DataWrapper<Terms>> GetNewestTerms(string termsId, string userId, string language)
         {
+            if (termsId == null)
+                throw new ArgumentNullException(nameof(termsId));
+            if (userId == null)
+                throw new ArgumentNullException(nameof(userId));
+            if (language == null)
+                throw new ArgumentNullException(nameof(language));
+
             var request = new RestRequest($"api/v2/content/terms/{termsId}/versions/newest", Method.GET);
             request.AddQueryParameter("guid", userId);
             request.AddHeader("Accept-Language", language);
