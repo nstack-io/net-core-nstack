@@ -3,7 +3,7 @@ name: Publish demo site
 on:
   push:
     branches:
-      - main
+      - master
     paths:
       - 'DemoNStack/DemoNStack/**'
 
