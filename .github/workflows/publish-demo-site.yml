@@ -6,6 +6,7 @@ on:
       - master
     paths:
       - 'DemoNStack/DemoNStack/**'
+  workflow_dispatch:
 
 jobs:
   publish:
@@ -29,7 +30,7 @@ jobs:
       run: dotnet build DemoNStack/DemoNStack/DemoNStack.csproj --configuration Release --no-restore --output ./output
 
     - name: 'Publish to app service'
-      uses: Azure/functions-action@v1
+      uses: azure/webapps-deploy@v2
       with:
         app-name: nstack-dotnetsdkdemo
         package: './output'
