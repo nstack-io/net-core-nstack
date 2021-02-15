@@ -1,0 +1,37 @@
+name: Publish demo site
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'DemoNStack/DemoNStack/**'
+
+jobs:
+  publish:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.x'
+
+    - name: Clean
+      run: dotnet clean DemoNStack/DemoNStack/DemoNStack.csproj --configuration Release && dotnet nuget locals all --clear
+
+    - name: Install dependencies
+      run: dotnet restore DemoNStack/DemoNStack/DemoNStack.csproj
+
+    - name: Build
+      run: dotnet build DemoNStack/DemoNStack/DemoNStack.csproj --configuration Release --no-restore --output ./output
+
+    - name: 'Publish to app service'
+      uses: Azure/functions-action@v1
+      id: fa
+      with:
+        app-name: nstack-dotnetsdkdemo
+        package: './output'
+        publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
