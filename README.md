@@ -32,7 +32,7 @@ This interface handles the REST communication with the NStack server. The built 
 This interface handles all communication regarding translations.
 
 #### GetLanguages
-This function returns all available languages for the platform provided as parameter. The format returned is `DataWrapper&lt;List&lt;ResourceData>>`.
+This function returns all available languages for the platform provided as parameter. The format returned is `DataWrapper<List<ResourceData>>`.
 
 ##### Parameters:
 
@@ -90,6 +90,90 @@ This functions returns the default language. The function by default returns a `
 | ------------- | ---- | ----------- |
 | platform | NStackPlatform (enum) | Which platform to get the translation for |
 
+### INStackTermsService
+This interface handles all communication regarding terms.
+
+#### GetAllTerms
+Gets all terms available for a language. The format returned is `DataWrapper<IEnumerable<TermsEntry>>`.
+
+##### Parameters
+| Property name | Type | Description |
+| ------------- | ---- | ----------- |
+| language | string | The ISO language code to get the list of terms for e.g. en-GB. |
+
+##### TermsEntry
+| Property name | Type |
+| ------------- | ---- |
+| Id | int |
+| Type | string |
+| Name | string |
+| Slug | string |
+
+#### GetTermsVersions
+Gets the available versions of a specified terms. The format returned is `DataWrapper<IEnumerable<Terms>>`.
+
+##### Parameters
+| Property name | Type | Description |
+| ------------- | ---- | ----------- |
+| termsName | string | The name of the terms to fetch. |
+| userId | string | The unique ID of the user who is going to read the terms.|
+| language | string | The ISO language code to get the terms in e.g. en-GB. |
+
+##### Terms
+| Property name | Type |
+| ------------- | ---- |
+| Id | int |
+| Version | string |
+| VersionName | string |
+| PublishedAt | DateTime |
+| HasViewed | bool |
+
+#### GetNewestTerms
+Gets the newest version of the specified terms. The format returned is `DataWrapper<TermsWithContent>`.
+
+##### Parameters
+| Property name | Type | Description |
+| ------------- | ---- | ----------- |
+| termsName | string | The name of the terms to fetch. |
+| userId | string | The unique ID of the user who is going to read the terms. |
+| language | string | The ISO language code to get the terms in e.g. en-GB. |
+
+##### TermsWithContent
+| Property name | Type |
+| ------------- | ---- |
+| Id | int |
+| Version | string |
+| VersionName | string |
+| PublishedAt | DateTime |
+| HasViewed | bool |
+| Content | TermsContent |
+
+##### TermsContent
+| Property name | Type |
+| ------------- | ---- |
+| Data | string |
+| Locale | string |
+
+#### GetTerms
+Gets a specified version of a terms. The format returned is `DataWrapper<TermsWithContent>`.
+
+##### Parameters
+| Property name | Type | Description |
+| ------------- | ---- | ----------- |
+| termsId | int | The ID of the terms to fetch. |
+| userId | string | The unique ID of the user who is going to read the terms. |
+| language | string | The ISO language code to get the terms in e.g. en-GB. |
+
+#### MarkRead
+Mark a terms as read for the user. The format returned is `bool`.
+
+##### Parameters
+| Property name | Type | Description |
+| ------------- | ---- | ----------- |
+| termsId | int | The ID of the terms to fetch. |
+| userId | string | The unique ID of the user who is going to read the terms. |
+| language | string | The ISO language code to get the terms in e.g. en-GB. |
+
 ## DI setup
 The SDK is built with DI support in mind and can be quickly set up in your `startup.cs` file in `ConfigureServices`:
 
@@ -102,6 +186,7 @@ services.AddSingleton<NStackConfiguration>(r => new NStackConfiguration
 });
 services.AddTransient<INStackRepository, NStackRepository>();
 services.AddTransient<INStackLocalizeService, NStackLocalizeService>();
+services.AddTransient<INStackTermsService, NStackTermsService>();
 ```
 
 Best practice is to not hard code the configuration values but to fetch them from your application settings. If `BaseUrl` isn't set, it will default to `https://nstack.io`. The rest of the properties does not have any default values.
