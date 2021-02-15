@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,6 +24,12 @@ namespace DemoNStack
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSession(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            });
+
             services.AddControllersWithViews();
             services.AddMemoryCache();
 
@@ -34,12 +41,12 @@ namespace DemoNStack
                 return new NStackConfiguration
                 {
                     ApiKey = section.GetValue<string>("ApiKey"),
-                    ApplicationId = section.GetValue<string>("ApplicationId"),
-                    BaseUrl = section.GetValue<string>("BaseUrl")
+                    ApplicationId = section.GetValue<string>("ApplicationId")
                 };
             });
             services.AddTransient<INStackRepository, NStackRepository>();
             services.AddTransient<INStackLocalizeService, NStackLocalizeService>();
+            services.AddTransient<INStackTermsService, NStackTermsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,6 +68,8 @@ namespace DemoNStack
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

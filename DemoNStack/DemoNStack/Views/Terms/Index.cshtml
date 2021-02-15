@@ -1,0 +1,16 @@
+﻿@model DemoNStack.Models.ViewModels.TermsViewModel
+
+<h1>@Model.Headline</h1>
+
+@Html.Raw(Model.Content)
+
+@if (Model.HasApproved)
+{
+    <div class="alert alert-primary">@Model.HasApprovedString</div>
+}
+else
+{
+    <form asp-action="AcceptTerms">
+        <button type="submit" class="btn btn-success">@Model.ApproveButton</button>
+    </form>
+}

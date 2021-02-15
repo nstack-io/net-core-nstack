@@ -1,4 +1,4 @@
-﻿@model Translation
+﻿@model DemoNStack.Models.ViewModels.NavbarViewModel
 
 <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
     <div class="container">
@@ -10,11 +10,14 @@
         <div class="navbar-collapse collapse" id="navbarSupportedContent">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index" asp-route-lang="@Model.CurrentLanguage">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Terms" asp-action="Index" asp-route-lang="@Model.CurrentLanguage">Terms</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        @Model.Default.Language
+                        @Model.Language
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="?lang=en-GB">English</a></li>
