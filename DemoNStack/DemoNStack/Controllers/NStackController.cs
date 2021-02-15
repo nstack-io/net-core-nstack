@@ -1,5 +1,6 @@
 ﻿using DemoNStack.Extensions;
 using DemoNStack.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using NStack.SDK.Models;
@@ -33,6 +34,20 @@ namespace DemoNStack.Controllers
 
                 return res;
             });
+        }
+
+        protected Guid GetUserId()
+        {
+            var userIdString = HttpContext.Session.GetString("UserId");
+
+            if (!Guid.TryParse(userIdString, out Guid userId))
+            {
+                userId = Guid.NewGuid();
+
+                HttpContext.Session.SetString("UserId", userId.ToString());
+            }
+
+            return userId;
         }
     }
 }

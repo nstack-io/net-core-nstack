@@ -6,11 +6,11 @@
 
 @if (Model.HasApproved)
 {
-    <p>@Model.HasApprovedString</p>
+    <div class="alert alert-primary">@Model.HasApprovedString</div>
 }
 else
 {
-    <form>
+    <form asp-action="AcceptTerms">
         <button type="submit" class="btn btn-success">@Model.ApproveButton</button>
     </form>
 }
