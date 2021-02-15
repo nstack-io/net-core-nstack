@@ -6,7 +6,6 @@ on:
       - master
     paths:
       - 'DemoNStack/DemoNStack/**'
-  workflow_dispatch:
 
 jobs:
   publish:
