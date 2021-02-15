@@ -1,5 +1,6 @@
 ﻿using DemoNStack.Extensions;
 using DemoNStack.Models;
+using DemoNStack.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using NStack.SDK.Models;
@@ -34,7 +35,13 @@ namespace DemoNStack.ViewComponents
                 return res;
             });
 
-            return View(res.Data);
+            var viewModel = new NavbarViewModel
+            {
+                CurrentLanguage = Request.GetCurrentLanguage(),
+                Language = res.Data.Default.Language
+            };
+
+            return View(viewModel);
         }
     }
 }

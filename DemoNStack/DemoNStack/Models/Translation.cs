@@ -10,5 +10,6 @@ namespace DemoNStack.Models
 
         public DefaultSection Default => new DefaultSection(this[nameof(Default).FirstCharToLower()]);
         public SecondSectionSection SecondSection => new SecondSectionSection(this[nameof(SecondSection).FirstCharToLower()]);
+        public TermsSection Terms => new TermsSection(this[nameof(Terms).FirstCharToLower()]);
     }
 }
