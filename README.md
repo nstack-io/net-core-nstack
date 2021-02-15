@@ -104,7 +104,7 @@ services.AddTransient<INStackRepository, NStackRepository>();
 services.AddTransient<INStackLocalizeService, NStackLocalizeService>();
 ```
 
-Best practice is to not hard code the configuration values but to fetch them from your application settings.
+Best practice is to not hard code the configuration values but to fetch them from your application settings. If `BaseUrl` isn't set, it will default to `https://nstack.io`. The rest of the properties does not have any default values.
 
 ## Translation generator
 The translation generator is a tool which can access your NStack translation and generate C# classes based on the JSON response from a specified resource.
