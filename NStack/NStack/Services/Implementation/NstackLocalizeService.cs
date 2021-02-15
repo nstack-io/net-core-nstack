@@ -30,17 +30,17 @@ namespace NStack.SDK.Services.Implementation
 
         public Task<DataMetaWrapper<ResourceItem>> GetDefaultResource(NStackPlatform platform) => GetDefaultResource<ResourceItem>(platform);
 
-        public async Task<DataWrapper<List<ResourceData>>> GetLanguages(NStackPlatform platform)
+        public Task<DataWrapper<List<ResourceData>>> GetLanguages(NStackPlatform platform)
         {
             var req = new RestRequest($"api/v2/content/localize/resources/platforms/{platform.ToString().ToLower()}");
-            return await _repository.DoRequest<DataWrapper<List<ResourceData>>>(req);
+            return _repository.DoRequest<DataWrapper<List<ResourceData>>>(req);
         }
 
-        public async Task<DataMetaWrapper<TSection>> GetResource<TSection>(int id) where TSection : ResourceItem
+        public Task<DataMetaWrapper<TSection>> GetResource<TSection>(int id) where TSection : ResourceItem
         {
             var req = new RestRequest($"/api/v2/content/localize/resources/{id}");
-            var temp = await _repository.DoRequest<DataMetaWrapper<TSection>>(req);
-            return await _repository.DoRequest<DataMetaWrapper<TSection>>(req);
+            
+            return _repository.DoRequest<DataMetaWrapper<TSection>>(req);
         }
 
         public Task<DataMetaWrapper<ResourceItem>> GetResource(int id) => GetResource<ResourceItem>(id);
