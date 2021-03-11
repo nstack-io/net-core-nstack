@@ -38,7 +38,7 @@ namespace NStack.SDK.Services.Implementation
 
         public Task<DataMetaWrapper<TSection>> GetResource<TSection>(int id) where TSection : ResourceItem
         {
-            var req = new RestRequest($"/api/v2/content/localize/resources/{id}");
+            var req = new RestRequest($"api/v2/content/localize/resources/{id}");
             
             return _repository.DoRequest<DataMetaWrapper<TSection>>(req);
         }

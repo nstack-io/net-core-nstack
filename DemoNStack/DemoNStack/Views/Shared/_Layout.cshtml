@@ -1,5 +1,7 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@using DemoNStack.Extensions 
+
+<!DOCTYPE html>
+<html lang="@Context.Request.GetCurrentLanguage()" dir="@Context.Request.GetLanguageDirection()">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -19,7 +21,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2020 - DemoNStack - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2021 - DemoNStack
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
