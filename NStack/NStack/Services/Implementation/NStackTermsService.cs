@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using NStack.SDK.Models;
+﻿using NStack.SDK.Models;
 using NStack.SDK.Repositories;
 using RestSharp;
 using System;
@@ -17,7 +16,7 @@ namespace NStack.SDK.Services.Implementation
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        public Task<DataWrapper<IEnumerable<TermsEntry>>> GetAllTerms(string language)
+        public Task<DataWrapper<IEnumerable<TermsEntry>>> GetAllTermsAsync(string language)
         {
             if (language == null)
                 throw new ArgumentNullException(nameof(language));
@@ -28,7 +27,7 @@ namespace NStack.SDK.Services.Implementation
             return _repository.DoRequest<DataWrapper<IEnumerable<TermsEntry>>>(request);
         }
 
-        public Task<DataWrapper<IEnumerable<Terms>>> GetTermsVersions(string termsId, string userId, string language)
+        public Task<DataWrapper<IEnumerable<Terms>>> GetTermsVersionsAsync(string termsId, string userId, string language)
         {
             if (termsId == null)
                 throw new ArgumentNullException(nameof(termsId));
@@ -44,7 +43,7 @@ namespace NStack.SDK.Services.Implementation
             return _repository.DoRequest<DataWrapper<IEnumerable<Terms>>>(request);
         }
 
-        public Task<DataWrapper<TermsWithContent>> GetNewestTerms(string termsId, string userId, string language)
+        public Task<DataWrapper<TermsWithContent>> GetNewestTermsAsync(string termsId, string userId, string language)
         {
             if (termsId == null)
                 throw new ArgumentNullException(nameof(termsId));
@@ -60,7 +59,7 @@ namespace NStack.SDK.Services.Implementation
             return _repository.DoRequest<DataWrapper<TermsWithContent>>(request);
         }
 
-        public Task<DataWrapper<TermsWithContent>> GetTerms(int termsId, string userId, string language)
+        public Task<DataWrapper<TermsWithContent>> GetTermsAsync(int termsId, string userId, string language)
         {
             if (termsId < 0)
                 throw new ArgumentException($"Expected an ID of 0 or higher. Got {termsId}", nameof(termsId));
@@ -76,7 +75,7 @@ namespace NStack.SDK.Services.Implementation
             return _repository.DoRequest<DataWrapper<TermsWithContent>>(request);
         }
 
-        public async Task<bool> MarkRead(int termsId, string userId, string language)
+        public async Task<bool> MarkReadAsync(int termsId, string userId, string language)
         {
             if (termsId < 0)
                 throw new ArgumentException($"Expected an ID of 0 or higher. Got {termsId}", nameof(termsId));

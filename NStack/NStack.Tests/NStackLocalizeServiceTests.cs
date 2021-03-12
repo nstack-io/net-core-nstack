@@ -108,7 +108,7 @@ namespace NStack.Tests
         [Test]
         public async Task TestGetDefaultLanguage()
         {
-            var translations = await _service.GetDefaultResource<TranslationData>(NStackPlatform.Backend);
+            var translations = await _service.GetDefaultResourceAsync<TranslationData>(NStackPlatform.Backend);
 
             Assert.AreEqual(_english.Default.Text, translations.Data.Default.Text);
         }
@@ -116,7 +116,7 @@ namespace NStack.Tests
         [Test]
         public async Task TestGetDefaultLanguageDefaultType()
         {
-            var translations = await _service.GetDefaultResource(NStackPlatform.Backend);
+            var translations = await _service.GetDefaultResourceAsync(NStackPlatform.Backend);
 
             Assert.AreEqual(_english.Default.Text, translations.Data["default"]["text"]);
         }
@@ -124,7 +124,7 @@ namespace NStack.Tests
         [Test]
         public async Task TestGetLanguageWithLocale()
         {
-            var translations = await _service.GetResource<TranslationData>("da-DK", NStackPlatform.Backend);
+            var translations = await _service.GetResourceAsync<TranslationData>("da-DK", NStackPlatform.Backend);
 
             Assert.AreEqual(_danish.Default.Text, translations.Data.Default.Text);
         }
@@ -132,7 +132,7 @@ namespace NStack.Tests
         [Test]
         public async Task TestGetLanguageWithLocaleDefaultType()
         {
-            var translations = await _service.GetResource("da-DK", NStackPlatform.Backend);
+            var translations = await _service.GetResourceAsync("da-DK", NStackPlatform.Backend);
 
             Assert.AreEqual(_danish.Default.Text, translations.Data["default"]["text"]);
         }
@@ -142,7 +142,7 @@ namespace NStack.Tests
         [TestCase(NStackPlatform.Mobile, "mobile")]
         public async Task TestCorrectUrl(NStackPlatform platform, string expectedTranslation)
         {
-            await _service.GetLanguages(platform);
+            await _service.GetLanguagesAsync(platform);
 
             _repository.Verify(r => r.DoRequest<DataWrapper<List<ResourceData>>>(It.Is<IRestRequest>(r => r.Resource.EndsWith(expectedTranslation)), It.IsAny<Action<HttpStatusCode>>()));
         }
