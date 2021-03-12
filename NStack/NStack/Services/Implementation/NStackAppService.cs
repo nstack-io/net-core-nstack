@@ -13,16 +13,18 @@ namespace NStack.SDK.Services.Implementation
         private readonly INStackRepository _repository;
         private readonly INStackLocalizeService _localizeService;
         private readonly IMemoryCache _memoryCache;
+        private readonly int _howOftenToCheckInMinutes;
         private const string OldVersionCacheKey = "nstack-old-version";
         private const string LastUpdatedCacheKey = "nstack-last-updated";
         private const string CurrentExecutionIdCacheKey = "nstack-guid";
         private const string LocalizationCacheKeyPrefix = "nstack-localization-";
 
-        public NStackAppService(INStackRepository repository, INStackLocalizeService localizeService, IMemoryCache memoryCache)
+        public NStackAppService(INStackRepository repository, INStackLocalizeService localizeService, IMemoryCache memoryCache, int? howOftenToCheckInMinutes = null)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             _localizeService = localizeService ?? throw new ArgumentNullException(nameof(localizeService));
             _memoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
+            _howOftenToCheckInMinutes = howOftenToCheckInMinutes ?? 5;
         }
 
         public async Task<DataAppOpenWrapper> AppOpen(NStackPlatform platform, string version, string environment = "production", bool developmentEnvironment = false, bool productionEnvironment = true)
@@ -96,6 +98,9 @@ namespace NStack.SDK.Services.Implementation
             if (string.IsNullOrWhiteSpace(locale))
                 throw new ArgumentException($"{nameof(locale)} must not be null or empty", nameof(locale));
 
+            if (!AppOpenIsExpired() && _memoryCache.TryGetValue<DataMetaWrapper<TSection>>($"{LocalizationCacheKeyPrefix}{locale}", out DataMetaWrapper<TSection> localization))
+                return localization;
+
             DataAppOpenWrapper appOpenData = await AppOpen(platform, version, environment, developmentEnvironment, productionEnvironment);
 
             if (appOpenData == null)
@@ -111,7 +116,7 @@ namespace NStack.SDK.Services.Implementation
                     return null;
             }
 
-            return await GetLocalization<TSection>(localizeToFetch);
+            return await GetLocalizationAsync<TSection>(localizeToFetch);
         }
 
         public Task<DataMetaWrapper<ResourceItem>> GetResource(string locale,
@@ -123,6 +128,9 @@ namespace NStack.SDK.Services.Implementation
 
         public async Task<DataMetaWrapper<TSection>> GetDefaultResource<TSection>(NStackPlatform platform, string version, string environment = "production", bool developmentEnvironment = false, bool productionEnvironment = true) where TSection : ResourceItem
         {
+            if (!AppOpenIsExpired() && _memoryCache.TryGetValue<DataMetaWrapper<TSection>>($"{LocalizationCacheKeyPrefix}default", out DataMetaWrapper<TSection> localization))
+                return localization;
+
             var appOpenData = await AppOpen(platform, version, environment, developmentEnvironment, productionEnvironment);
 
             if (appOpenData == null)
@@ -133,7 +141,7 @@ namespace NStack.SDK.Services.Implementation
             if (localizeToFetch == null)
                 return null;
 
-            return await GetLocalization<TSection>(localizeToFetch);
+            return await GetLocalizationAsync<TSection>(localizeToFetch);
         }
 
         public Task<DataMetaWrapper<ResourceItem>> GetDefaultResource(NStackPlatform platform,
@@ -142,19 +150,27 @@ namespace NStack.SDK.Services.Implementation
                                                                       bool developmentEnvironment = false,
                                                                       bool productionEnvironment = true) => GetDefaultResource<ResourceItem>(platform, version, environment, developmentEnvironment, productionEnvironment);
 
-        private async Task<DataMetaWrapper<TSection>> GetLocalization<TSection>(ResourceData localizeToFetch) where TSection : ResourceItem
+        private bool AppOpenIsExpired() => !_memoryCache.TryGetValue<DateTime>(LastUpdatedCacheKey, out DateTime lastUpdated) 
+                                            || lastUpdated < DateTime.UtcNow.AddMinutes(_howOftenToCheckInMinutes * -1);
+
+        private async Task<DataMetaWrapper<TSection>> GetLocalizationAsync<TSection>(ResourceData localizeToFetch) where TSection : ResourceItem
         {
             if (localizeToFetch == null)
                 throw new ArgumentNullException(nameof(localizeToFetch));
 
             //If there is an update or the data isn't cached, fetch it
-            if (!localizeToFetch.ShouldUpdate && _memoryCache.TryGetValue<DataMetaWrapper<TSection>>($"{LocalizationCacheKeyPrefix}{localizeToFetch.Id}", out DataMetaWrapper<TSection> localization))
+            if (!localizeToFetch.ShouldUpdate && _memoryCache.TryGetValue<DataMetaWrapper<TSection>>($"{LocalizationCacheKeyPrefix}{localizeToFetch.Language.Locale}", out DataMetaWrapper<TSection> localization))
                 return localization;
 
             localization = await _localizeService.GetResource<TSection>(localizeToFetch.Id);
 
             if (localization != null)
-                _memoryCache.Set<DataMetaWrapper<TSection>>($"{LocalizationCacheKeyPrefix}{localizeToFetch.Id}", localization);
+            {
+                _memoryCache.Set<DataMetaWrapper<TSection>>($"{LocalizationCacheKeyPrefix}{localizeToFetch.Language.Locale}", localization);
+
+                if (localizeToFetch.Language.IsDefault)
+                    _memoryCache.Set<DataMetaWrapper<TSection>>($"{LocalizationCacheKeyPrefix}default", localization);
+            }
 
             return localization;
         }
