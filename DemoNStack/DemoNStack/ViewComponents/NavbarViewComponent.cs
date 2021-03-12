@@ -12,28 +12,18 @@ namespace DemoNStack.ViewComponents
 {
     public class NavbarViewComponent : ViewComponent
     {
-        private INStackLocalizeService NStackLocalizeService { get; }
+        private INStackAppService NStackAppService { get; }
         private IMemoryCache Cache { get; }
 
-        public NavbarViewComponent(INStackLocalizeService nStackLocalizeService, IMemoryCache memoryCache)
+        public NavbarViewComponent(INStackAppService nStackAppService, IMemoryCache memoryCache)
         {
-            NStackLocalizeService = nStackLocalizeService ?? throw new ArgumentNullException(nameof(nStackLocalizeService));
+            NStackAppService = nStackAppService ?? throw new ArgumentNullException(nameof(nStackAppService));
             Cache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var res = await Cache.GetOrCreateAsync($"nstack-translation-{Request.GetCurrentLanguage()}", async e =>
-            {
-                e.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(10);
-
-                var res = await NStackLocalizeService.GetResource<Translation>(Request.GetCurrentLanguage(), NStackPlatform.Backend);
-
-                if (res == null)
-                    res = await NStackLocalizeService.GetDefaultResource<Translation>(NStackPlatform.Backend);
-
-                return res;
-            });
+            var res = await NStackAppService.GetResourceAsync<Translation>(Request.GetCurrentLanguage(), NStackPlatform.Web, "1.3.0");
 
             var viewModel = new NavbarViewModel
             {
