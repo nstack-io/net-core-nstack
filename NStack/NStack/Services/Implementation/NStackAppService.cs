@@ -3,6 +3,7 @@ using NStack.SDK.Models;
 using NStack.SDK.Repositories;
 using RestSharp;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,7 +17,6 @@ namespace NStack.SDK.Services.Implementation
         private readonly int _howOftenToCheckInMinutes;
         private const string OldVersionCacheKey = "nstack-old-version";
         private const string LastUpdatedCacheKey = "nstack-last-updated";
-        private const string CurrentExecutionIdCacheKey = "nstack-guid";
         private const string LocalizationCacheKeyPrefix = "nstack-localization-";
 
         public NStackAppService(INStackRepository repository, INStackLocalizeService localizeService, IMemoryCache memoryCache, int? howOftenToCheckInMinutes = null)
@@ -27,7 +27,12 @@ namespace NStack.SDK.Services.Implementation
             _howOftenToCheckInMinutes = howOftenToCheckInMinutes ?? 5;
         }
 
-        public async Task<DataAppOpenWrapper> AppOpen(NStackPlatform platform, string version, string environment = "production", bool developmentEnvironment = false, bool productionEnvironment = true)
+        public async Task<DataAppOpenWrapper> AppOpen<TSection>(NStackPlatform platform,
+                                                      Guid userId,
+                                                      string version,
+                                                      string environment = "production",
+                                                      bool developmentEnvironment = false,
+                                                      bool productionEnvironment = true) where TSection : ResourceItem
         {
             if (string.IsNullOrWhiteSpace(version) && (platform != NStackPlatform.Web || platform != NStackPlatform.Backend))
                 throw new ArgumentException("Version is required on all platforms except web", nameof(version));
@@ -41,7 +46,7 @@ namespace NStack.SDK.Services.Implementation
             request.AddJsonBody(new
             {
                 platform = GetPlatformString(platform),
-                guid = GetCurrentExecutionGuid(),
+                guid = userId,
                 version = version,
                 old_version = GetOldVersion() ?? version,
                 last_updated = GetLastUpdatedString(),
@@ -57,10 +62,20 @@ namespace NStack.SDK.Services.Implementation
             _memoryCache.Set<DateTime>(LastUpdatedCacheKey, DateTime.UtcNow);
             _memoryCache.Set<string>(OldVersionCacheKey, version);
 
+            // Fetch and store all updated localizations into the memory
+            IEnumerable<Task<DataMetaWrapper<TSection>>> localizationFetches = response.Data.Localize.Where(l => l.ShouldUpdate).Select(GetLocalizationAsync<TSection>);
+
+            await Task.WhenAll(localizationFetches);
+
             return response;
         }
 
-        private Guid GetCurrentExecutionGuid() => _memoryCache.GetOrCreate<Guid>(CurrentExecutionIdCacheKey, entry => Guid.NewGuid());
+        public Task<DataAppOpenWrapper> AppOpen(NStackPlatform platform,
+                                                      Guid userId,
+                                                      string version,
+                                                      string environment = "production",
+                                                      bool developmentEnvironment = false,
+                                                      bool productionEnvironment = true) => AppOpen<ResourceItem>(platform, userId, version, environment, developmentEnvironment, productionEnvironment);
 
         private string GetLastUpdatedString()
         {
@@ -101,22 +116,15 @@ namespace NStack.SDK.Services.Implementation
             if (!AppOpenIsExpired() && _memoryCache.TryGetValue<DataMetaWrapper<TSection>>($"{LocalizationCacheKeyPrefix}{locale}", out DataMetaWrapper<TSection> localization))
                 return localization;
 
-            DataAppOpenWrapper appOpenData = await AppOpen(platform, version, environment, developmentEnvironment, productionEnvironment);
+            DataAppOpenWrapper appOpenData = await AppOpen(platform, Guid.NewGuid(), version, environment, developmentEnvironment, productionEnvironment);
 
             if (appOpenData == null)
                 return null;
 
-            ResourceData localizeToFetch = appOpenData.Data.Localize.FirstOrDefault(l => locale.Equals(l.Language.Locale, StringComparison.InvariantCultureIgnoreCase));
+            if (_memoryCache.TryGetValue<DataMetaWrapper<TSection>>($"{LocalizationCacheKeyPrefix}{locale}", out var fetchedLocalization))
+                return fetchedLocalization;
 
-            if(localizeToFetch == null)
-            {
-                localizeToFetch = appOpenData.Data.Localize.FirstOrDefault(l => l.Language.IsDefault);
-
-                if(localizeToFetch == null)
-                    return null;
-            }
-
-            return await GetLocalizationAsync<TSection>(localizeToFetch);
+            return _memoryCache.Get<DataMetaWrapper<TSection>>($"{LocalizationCacheKeyPrefix}default");
         }
 
         public Task<DataMetaWrapper<ResourceItem>> GetResource(string locale,
@@ -131,17 +139,12 @@ namespace NStack.SDK.Services.Implementation
             if (!AppOpenIsExpired() && _memoryCache.TryGetValue<DataMetaWrapper<TSection>>($"{LocalizationCacheKeyPrefix}default", out DataMetaWrapper<TSection> localization))
                 return localization;
 
-            var appOpenData = await AppOpen(platform, version, environment, developmentEnvironment, productionEnvironment);
+            var appOpenData = await AppOpen(platform, Guid.NewGuid(), version, environment, developmentEnvironment, productionEnvironment);
 
             if (appOpenData == null)
                 return null;
 
-            ResourceData localizeToFetch = appOpenData.Data.Localize.FirstOrDefault(l => l.Language.IsDefault);
-
-            if (localizeToFetch == null)
-                return null;
-
-            return await GetLocalizationAsync<TSection>(localizeToFetch);
+            return _memoryCache.Get<DataMetaWrapper<TSection>>($"{LocalizationCacheKeyPrefix}default");
         }
 
         public Task<DataMetaWrapper<ResourceItem>> GetDefaultResource(NStackPlatform platform,
