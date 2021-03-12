@@ -20,7 +20,7 @@ namespace NStack.SDK.Services.Implementation
             _memoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
         }
 
-        public async Task AppOpen(NStackPlatform platform, string version, Guid userId, string environment = "production", bool developmentEnvironment = false, bool productionEnvironment = true)
+        public async Task<DataAppOpenWrapper> AppOpen(NStackPlatform platform, string version, Guid userId, string environment = "production", bool developmentEnvironment = false, bool productionEnvironment = true)
         {
             if (string.IsNullOrWhiteSpace(version) && (platform != NStackPlatform.Web || platform != NStackPlatform.Backend))
                 throw new ArgumentException($"Version is required on all platforms except web", nameof(version));
@@ -45,10 +45,12 @@ namespace NStack.SDK.Services.Implementation
                 test = !productionEnvironment
             }, "application/x-www-form-urlencoded");
 
-            var response = await _repository.DoRequest<object>(request);
+            var response = await _repository.DoRequest<DataAppOpenWrapper>(request);
 
             _memoryCache.Set<DateTime>(LastUpdatedCacheKey, DateTime.UtcNow);
             _memoryCache.Set<string>(OldVersionCacheKey, version);
+
+            return response;
         }
 
         private string GetLastUpdatedString()

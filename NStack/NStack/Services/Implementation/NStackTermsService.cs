@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using NStack.SDK.Models;
+﻿using NStack.SDK.Models;
 using NStack.SDK.Repositories;
 using RestSharp;
 using System;
