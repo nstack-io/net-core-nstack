@@ -54,7 +54,7 @@ namespace NStack.SDK.Services.Implementation
                 test = !productionEnvironment
             }, "application/x-www-form-urlencoded");
 
-            var response = await _repository.DoRequest<DataAppOpenWrapper>(request);
+            var response = await _repository.DoRequestAsync<DataAppOpenWrapper>(request);
 
             if (response == null)
                 return null;

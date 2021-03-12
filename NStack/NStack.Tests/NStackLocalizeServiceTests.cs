@@ -77,7 +77,7 @@ namespace NStack.Tests
                 DefaultValue = DefaultValue.Empty
             };
 
-            _repository.Setup(r => r.DoRequest<DataWrapper<List<ResourceData>>>(It.Is<IRestRequest>(s => s.Resource.EndsWith("platforms/backend")), It.IsAny<Action<HttpStatusCode>>()))
+            _repository.Setup(r => r.DoRequestAsync<DataWrapper<List<ResourceData>>>(It.Is<IRestRequest>(s => s.Resource.EndsWith("platforms/backend")), It.IsAny<Action<HttpStatusCode>>()))
                 .Returns(GetLanguageMock);
 
             _english = new TranslationData();
@@ -85,10 +85,10 @@ namespace NStack.Tests
             defaultSection.TryAdd("text", "I'm in English");
             _english.TryAdd("default", defaultSection);
 
-            _repository.Setup(r => r.DoRequest<DataMetaWrapper<TranslationData>>(It.Is<IRestRequest>(s => s.Resource.EndsWith($"resources/{_englishLanguage.Id}")), It.IsAny<Action<HttpStatusCode>>()))
+            _repository.Setup(r => r.DoRequestAsync<DataMetaWrapper<TranslationData>>(It.Is<IRestRequest>(s => s.Resource.EndsWith($"resources/{_englishLanguage.Id}")), It.IsAny<Action<HttpStatusCode>>()))
                 .Returns(Task.FromResult(new DataMetaWrapper<TranslationData> { Data = _english }));
 
-            _repository.Setup(r => r.DoRequest<DataMetaWrapper<ResourceItem>>(It.Is<IRestRequest>(s => s.Resource.EndsWith($"resources/{_englishLanguage.Id}")), It.IsAny<Action<HttpStatusCode>>()))
+            _repository.Setup(r => r.DoRequestAsync<DataMetaWrapper<ResourceItem>>(It.Is<IRestRequest>(s => s.Resource.EndsWith($"resources/{_englishLanguage.Id}")), It.IsAny<Action<HttpStatusCode>>()))
                 .Returns(Task.FromResult(new DataMetaWrapper<ResourceItem> { Data = _english }));
 
             _danish = new TranslationData();
@@ -96,10 +96,10 @@ namespace NStack.Tests
             defaultDanishSection.TryAdd("text", "Jeg er på dansk");
             _danish.TryAdd("default", defaultDanishSection);
 
-            _repository.Setup(r => r.DoRequest<DataMetaWrapper<TranslationData>>(It.Is<IRestRequest>(s => s.Resource.EndsWith($"resources/{_danishLanguage.Id}")), It.IsAny<Action<HttpStatusCode>>()))
+            _repository.Setup(r => r.DoRequestAsync<DataMetaWrapper<TranslationData>>(It.Is<IRestRequest>(s => s.Resource.EndsWith($"resources/{_danishLanguage.Id}")), It.IsAny<Action<HttpStatusCode>>()))
                 .Returns(Task.FromResult(new DataMetaWrapper<TranslationData> { Data = _danish }));
 
-            _repository.Setup(r => r.DoRequest<DataMetaWrapper<ResourceItem>>(It.Is<IRestRequest>(s => s.Resource.EndsWith($"resources/{_danishLanguage.Id}")), It.IsAny<Action<HttpStatusCode>>()))
+            _repository.Setup(r => r.DoRequestAsync<DataMetaWrapper<ResourceItem>>(It.Is<IRestRequest>(s => s.Resource.EndsWith($"resources/{_danishLanguage.Id}")), It.IsAny<Action<HttpStatusCode>>()))
                 .Returns(Task.FromResult(new DataMetaWrapper<ResourceItem> { Data = _danish }));
 
             _service = new NStackLocalizeService(_repository.Object);
@@ -144,7 +144,7 @@ namespace NStack.Tests
         {
             await _service.GetLanguagesAsync(platform);
 
-            _repository.Verify(r => r.DoRequest<DataWrapper<List<ResourceData>>>(It.Is<IRestRequest>(r => r.Resource.EndsWith(expectedTranslation)), It.IsAny<Action<HttpStatusCode>>()));
+            _repository.Verify(r => r.DoRequestAsync<DataWrapper<List<ResourceData>>>(It.Is<IRestRequest>(r => r.Resource.EndsWith(expectedTranslation)), It.IsAny<Action<HttpStatusCode>>()));
         }
 
         private Task<DataWrapper<List<ResourceData>>> GetLanguageMock()

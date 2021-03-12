@@ -14,6 +14,6 @@ namespace NStack.SDK.Repositories
         /// <param name="request">The request to NStack.</param>
         /// <param name="errorHandling">Custom error handling.</param>
         /// <returns></returns>
-        internal Task<T> DoRequest<T>(IRestRequest request, Action<HttpStatusCode> errorHandling = null) where T : class;
+        internal Task<T> DoRequestAsync<T>(IRestRequest request, Action<HttpStatusCode> errorHandling = null) where T : class;
     }
 }

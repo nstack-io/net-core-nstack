@@ -46,7 +46,7 @@ namespace NStack.SDK.Services
         /// <summary>
         /// Fetch translations for the given <paramref name="locale"/>.
         /// </summary>
-        /// <param name="id">The locale to fetch.</param>
+        /// <param name="locale">The locale to fetch.</param>
         /// <param name="platform">The platform to fetch the resource for.</param>
         /// <param name="version">The version of the application asking.</param>
         /// <param name="environment">The name of the environment doing the request.</param>
