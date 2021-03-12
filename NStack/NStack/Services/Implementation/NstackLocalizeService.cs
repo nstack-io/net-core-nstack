@@ -31,14 +31,14 @@ namespace NStack.SDK.Services.Implementation
         public Task<DataWrapper<List<ResourceData>>> GetLanguagesAsync(NStackPlatform platform)
         {
             var req = new RestRequest($"api/v2/content/localize/resources/platforms/{platform.ToString().ToLower()}");
-            return _repository.DoRequest<DataWrapper<List<ResourceData>>>(req);
+            return _repository.DoRequestAsync<DataWrapper<List<ResourceData>>>(req);
         }
 
         public Task<DataMetaWrapper<TSection>> GetResourceAsync<TSection>(int id) where TSection : ResourceItem
         {
             var req = new RestRequest($"api/v2/content/localize/resources/{id}");
             
-            return _repository.DoRequest<DataMetaWrapper<TSection>>(req);
+            return _repository.DoRequestAsync<DataMetaWrapper<TSection>>(req);
         }
 
         public Task<DataMetaWrapper<ResourceItem>> GetResourceAsync(int id) => GetResourceAsync<ResourceItem>(id);

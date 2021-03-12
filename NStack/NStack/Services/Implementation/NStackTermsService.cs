@@ -24,7 +24,7 @@ namespace NStack.SDK.Services.Implementation
             var request = new RestRequest("api/v2/content/terms", Method.GET);
             request.AddHeader("Accept-Language", language);
 
-            return _repository.DoRequest<DataWrapper<IEnumerable<TermsEntry>>>(request);
+            return _repository.DoRequestAsync<DataWrapper<IEnumerable<TermsEntry>>>(request);
         }
 
         public Task<DataWrapper<IEnumerable<Terms>>> GetTermsVersionsAsync(string termsId, string userId, string language)
@@ -40,7 +40,7 @@ namespace NStack.SDK.Services.Implementation
             request.AddQueryParameter("guid", userId);
             request.AddHeader("Accept-Language", language);
 
-            return _repository.DoRequest<DataWrapper<IEnumerable<Terms>>>(request);
+            return _repository.DoRequestAsync<DataWrapper<IEnumerable<Terms>>>(request);
         }
 
         public Task<DataWrapper<TermsWithContent>> GetNewestTermsAsync(string termsId, string userId, string language)
@@ -56,7 +56,7 @@ namespace NStack.SDK.Services.Implementation
             request.AddQueryParameter("guid", userId);
             request.AddHeader("Accept-Language", language);
 
-            return _repository.DoRequest<DataWrapper<TermsWithContent>>(request);
+            return _repository.DoRequestAsync<DataWrapper<TermsWithContent>>(request);
         }
 
         public Task<DataWrapper<TermsWithContent>> GetTermsAsync(int termsId, string userId, string language)
@@ -72,7 +72,7 @@ namespace NStack.SDK.Services.Implementation
             request.AddQueryParameter("guid", userId);
             request.AddHeader("Accept-Language", language);
 
-            return _repository.DoRequest<DataWrapper<TermsWithContent>>(request);
+            return _repository.DoRequestAsync<DataWrapper<TermsWithContent>>(request);
         }
 
         public async Task<bool> MarkReadAsync(int termsId, string userId, string language)
@@ -94,7 +94,7 @@ namespace NStack.SDK.Services.Implementation
             }, "application/x-www-form-urlencoded");
             request.AddHeader("Accept-Language", language);
 
-            var data = await _repository.DoRequest<object>(request);
+            var data = await _repository.DoRequestAsync<object>(request);
 
             return data != null;
         }
