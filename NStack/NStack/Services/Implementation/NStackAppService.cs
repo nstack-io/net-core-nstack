@@ -116,7 +116,7 @@ namespace NStack.SDK.Services.Implementation
             if (!AppOpenIsExpired() && _memoryCache.TryGetValue<DataMetaWrapper<TSection>>($"{LocalizationCacheKeyPrefix}{locale}", out DataMetaWrapper<TSection> localization))
                 return localization;
 
-            DataAppOpenWrapper appOpenData = await AppOpenAsync(platform, Guid.NewGuid(), version, environment, developmentEnvironment, productionEnvironment);
+            DataAppOpenWrapper appOpenData = await AppOpenAsync<TSection>(platform, Guid.NewGuid(), version, environment, developmentEnvironment, productionEnvironment);
 
             if (appOpenData == null)
                 return null;
@@ -139,7 +139,7 @@ namespace NStack.SDK.Services.Implementation
             if (!AppOpenIsExpired() && _memoryCache.TryGetValue<DataMetaWrapper<TSection>>($"{LocalizationCacheKeyPrefix}default", out DataMetaWrapper<TSection> localization))
                 return localization;
 
-            var appOpenData = await AppOpenAsync(platform, Guid.NewGuid(), version, environment, developmentEnvironment, productionEnvironment);
+            var appOpenData = await AppOpenAsync<TSection>(platform, Guid.NewGuid(), version, environment, developmentEnvironment, productionEnvironment);
 
             if (appOpenData == null)
                 return null;

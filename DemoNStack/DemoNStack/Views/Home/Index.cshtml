@@ -1,10 +1,10 @@
-﻿@model Translation
+﻿@model DefaultSection
 @{
     ViewData["Title"] = "Home Page";
 }
 
-    <div class="text-center">
-        <h1 class="display-4">@Model.SecondSection.First</h1>
-        <p>@Model.Default.Text</p>
-        <h1 class="display-4">@Model.SecondSection.Second</h1>
-    </div>
+<h1 class="display-4">@Model.FirstHeadline</h1>
+<p>@Model.Text</p>
+
+<h2 class="display-4">@Model.SecondHeadline</h2>
+@Html.Raw(Model.Html)
