@@ -12,7 +12,7 @@ namespace NStack.SDK.Services
         /// </summary>
         /// <param name="language">The ISO language code to get the list of terms for e.g. en-GB.</param>
         /// <exception cref="ArgumentNullException"></exception>
-        Task<DataWrapper<IEnumerable<TermsEntry>>> GetAllTerms(string language);
+        Task<DataWrapper<IEnumerable<TermsEntry>>> GetAllTermsAsync(string language);
 
         /// <summary>
         /// Get a list of versions for the terms with the given <paramref name="termsName"/>.
@@ -21,7 +21,7 @@ namespace NStack.SDK.Services
         /// <param name="userId">The unique ID of the user who is going to read the terms.</param>
         /// <param name="language">The ISO language code to get the terms in e.g. en-GB.</param>
         /// <exception cref="ArgumentNullException"></exception>
-        Task<DataWrapper<IEnumerable<Terms>>> GetTermsVersions(string termsName, string userId, string language);
+        Task<DataWrapper<IEnumerable<Terms>>> GetTermsVersionsAsync(string termsName, string userId, string language);
 
         /// <summary>
         /// Get the latest version of the terms with the given <paramref name="termsName"/>.
@@ -30,7 +30,7 @@ namespace NStack.SDK.Services
         /// <param name="userId">The unique ID of the user who is going to read the terms.</param>
         /// <param name="language">The ISO language code to get the terms in e.g. en-GB.</param>
         /// <exception cref="ArgumentNullException"></exception>
-        Task<DataWrapper<TermsWithContent>> GetNewestTerms(string termsName, string userId, string language);
+        Task<DataWrapper<TermsWithContent>> GetNewestTermsAsync(string termsName, string userId, string language);
 
         /// <summary>
         /// Get the specified version of the terms with the given <paramref name="termsId"/>.
@@ -40,7 +40,7 @@ namespace NStack.SDK.Services
         /// <param name="language">The ISO language code to get the terms in e.g. en-GB.</param>
         /// <exception cref="ArgumentException"></exception>
         /// <exception cref="ArgumentNullException"></exception>
-        Task<DataWrapper<TermsWithContent>> GetTerms(int termsId, string userId, string language);
+        Task<DataWrapper<TermsWithContent>> GetTermsAsync(int termsId, string userId, string language);
 
         /// <summary>
         /// Mark terms as read.
@@ -50,6 +50,6 @@ namespace NStack.SDK.Services
         /// <param name="language">The ISO language code of the terms to mark as read e.g. en-GB.</param>
         /// <exception cref="ArgumentException"></exception>
         /// <exception cref="ArgumentNullException"></exception>
-        Task<bool> MarkRead(int termsId, string userId, string language);
+        Task<bool> MarkReadAsync(int termsId, string userId, string language);
     }
 }

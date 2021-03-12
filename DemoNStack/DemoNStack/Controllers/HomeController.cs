@@ -3,14 +3,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using DemoNStack.Models;
 using NStack.SDK.Services;
-using Microsoft.Extensions.Caching.Memory;
 using NStack.SDK.Models;
 
 namespace DemoNStack.Controllers
 {
     public class HomeController : NStackController
     {
-        public HomeController(IMemoryCache memoryCache, INStackLocalizeService nStackLocalizeService) : base(memoryCache, nStackLocalizeService)
+        public HomeController(INStackAppService nStackAppService) : base(nStackAppService)
         {
         }
 
@@ -18,7 +17,7 @@ namespace DemoNStack.Controllers
         {
             DataMetaWrapper<Translation> res = await GetTranslations();
             
-            return View(res.Data);
+            return View(res.Data.Default);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -47,6 +47,7 @@ namespace DemoNStack
             services.AddTransient<INStackRepository, NStackRepository>();
             services.AddTransient<INStackLocalizeService, NStackLocalizeService>();
             services.AddTransient<INStackTermsService, NStackTermsService>();
+            services.AddTransient<INStackAppService, NStackAppService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

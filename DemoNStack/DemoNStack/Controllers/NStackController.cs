@@ -2,7 +2,6 @@
 using DemoNStack.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
 using NStack.SDK.Models;
 using NStack.SDK.Services;
 using System;
@@ -12,28 +11,16 @@ namespace DemoNStack.Controllers
 {
     public abstract class NStackController : Controller
     {
-        protected INStackLocalizeService NStackLocalizeService { get; }
-        protected IMemoryCache Cache { get; }
+        protected INStackAppService NStackAppService { get; }
 
-        protected NStackController(IMemoryCache cache, INStackLocalizeService nStackLocalizeService)
+        protected NStackController(INStackAppService nStackAppService)
         {
-            Cache = cache ?? throw new ArgumentNullException(nameof(cache));
-            NStackLocalizeService = nStackLocalizeService ?? throw new ArgumentNullException(nameof(nStackLocalizeService));
+            NStackAppService = nStackAppService ?? throw new ArgumentNullException(nameof(nStackAppService));
         }
 
         protected async Task<DataMetaWrapper<Translation>> GetTranslations()
         {
-            return await Cache.GetOrCreateAsync($"nstack-translation-{Request.GetCurrentLanguage()}", async e =>
-            {
-                e.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(10);
-
-                var res = await NStackLocalizeService.GetResource<Translation>(Request.GetCurrentLanguage(), NStackPlatform.Backend);
-
-                if (res == null)
-                    res = await NStackLocalizeService.GetDefaultResource<Translation>(NStackPlatform.Backend);
-
-                return res;
-            });
+            return await NStackAppService.GetResourceAsync<Translation>(Request.GetCurrentLanguage(), NStackPlatform.Web, "1.3.0");
         }
 
         protected Guid GetUserId()

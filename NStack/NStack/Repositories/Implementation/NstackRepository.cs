@@ -42,7 +42,7 @@ namespace NStack.SDK.Repositories.Implementation
             });
         }
 
-        async Task<T> INStackRepository.DoRequest<T>(IRestRequest request, Action<HttpStatusCode> errorHandling)
+        async Task<T> INStackRepository.DoRequestAsync<T>(IRestRequest request, Action<HttpStatusCode> errorHandling)
         {
             var resp = await Client.ExecuteAsync<T>(request);
             var code = (int)resp.StatusCode;

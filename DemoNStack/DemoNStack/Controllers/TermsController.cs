@@ -1,7 +1,6 @@
 ﻿using DemoNStack.Extensions;
 using DemoNStack.Models;
 using DemoNStack.Models.ViewModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using NStack.SDK.Models;
@@ -14,9 +13,11 @@ namespace DemoNStack.Controllers
     public class TermsController : NStackController
     {
         private INStackTermsService TermsService { get; }
+        private IMemoryCache Cache { get; }
 
-        public TermsController(IMemoryCache cache, INStackLocalizeService localizeService, INStackTermsService termsService) : base(cache, localizeService)
+        public TermsController(INStackAppService appService, IMemoryCache cache, INStackTermsService termsService) : base(appService)
         {
+            Cache = cache ?? throw new ArgumentNullException(nameof(cache));
             TermsService = termsService ?? throw new ArgumentNullException(nameof(termsService));
         }
 
@@ -49,7 +50,7 @@ namespace DemoNStack.Controllers
 
             TermsWithContent newestTerms = await GetNewestTerms(userId, language);
 
-            await TermsService.MarkRead(newestTerms.Id, userId.ToString(), language);
+            await TermsService.MarkReadAsync(newestTerms.Id, userId.ToString(), language);
 
             //Clear cache so we get the updated boolean that the user has read the terms
             Cache.Remove($"terms-{language}-{userId}");
@@ -62,7 +63,7 @@ namespace DemoNStack.Controllers
             return (await Cache.GetOrCreateAsync($"terms-{language}-{userId}", async e => {
                 e.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(60);
 
-                return await TermsService.GetNewestTerms("terms", userId.ToString(), language);
+                return await TermsService.GetNewestTermsAsync("terms", userId.ToString(), language);
             })).Data;
         }
     }
