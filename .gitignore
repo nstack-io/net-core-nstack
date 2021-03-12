@@ -355,3 +355,4 @@ MigrationBackup/
 *.tfstate.backup
 .terraform/
 *.terraform.lock.hcl
+/NStack/NStack.Tests/NStackAppServiceTests.cs

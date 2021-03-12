@@ -11,12 +11,10 @@ namespace NStack.SDK.Services.Implementation
     public class NStackLocalizeService : INStackLocalizeService
     {
         private readonly INStackRepository _repository;
+
         public NStackLocalizeService(INStackRepository repository)
         {
-            if (repository == null)
-                throw new ArgumentNullException(nameof(repository));
-
-            _repository = repository;
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
         public async Task<DataMetaWrapper<TSection>> GetDefaultResource<TSection>(NStackPlatform platform) where TSection : ResourceItem
