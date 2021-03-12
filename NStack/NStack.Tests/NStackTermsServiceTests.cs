@@ -30,41 +30,41 @@ namespace NStack.SDK.Tests
         [Test]
         public async Task RemoveMeGetAll()
         {
-            var temp = await _service.GetAllTerms("en-GB");
-            var tempDa = await _service.GetAllTerms("da-DK");
-            var tempAr = await _service.GetAllTerms("ar-QA");
+            var temp = await _service.GetAllTermsAsync("en-GB");
+            var tempDa = await _service.GetAllTermsAsync("da-DK");
+            var tempAr = await _service.GetAllTermsAsync("ar-QA");
         }
 
         [Test]
         public async Task RemoveMeGetVersions()
         {
-            var temp = await _service.GetTermsVersions("terms", "1", "en-GB");
-            var tempDa = await _service.GetTermsVersions("terms", "1", "da-DK");
-            var tempAr = await _service.GetTermsVersions("terms", "1", "ar-QA");
+            var temp = await _service.GetTermsVersionsAsync("terms", "1", "en-GB");
+            var tempDa = await _service.GetTermsVersionsAsync("terms", "1", "da-DK");
+            var tempAr = await _service.GetTermsVersionsAsync("terms", "1", "ar-QA");
         }
 
         [Test]
         public async Task RemoveMeGetNewest()
         {
-            var temp = await _service.GetNewestTerms("terms", "1", "en-GB");
-            var tempDa = await _service.GetNewestTerms("terms", "1", "da-DK");
-            var tempAr = await _service.GetNewestTerms("terms", "1", "ar-QA");
+            var temp = await _service.GetNewestTermsAsync("terms", "1", "en-GB");
+            var tempDa = await _service.GetNewestTermsAsync("terms", "1", "da-DK");
+            var tempAr = await _service.GetNewestTermsAsync("terms", "1", "ar-QA");
         }
 
         [Test]
         public async Task RemoveMeGetTerms()
         {
-            var temp = await _service.GetTerms(11, "1", "en-GB");
-            var tempDa = await _service.GetTerms(11, "1", "da-DK");
-            var tempAr = await _service.GetTerms(11, "1", "ar-QA");
+            var temp = await _service.GetTermsAsync(11, "1", "en-GB");
+            var tempDa = await _service.GetTermsAsync(11, "1", "da-DK");
+            var tempAr = await _service.GetTermsAsync(11, "1", "ar-QA");
         }
 
         [Test]
         public async Task RemoveMeMarkRead()
         {
-            var temp = await _service.MarkRead(11, "1", "en-GB");
+            var temp = await _service.MarkReadAsync(11, "1", "en-GB");
 
-            var temp2 = await _service.GetTerms(11, "1", "en-GB");
+            var temp2 = await _service.GetTermsAsync(11, "1", "en-GB");
             //var tempDa = await _service.GetTerms(11, "1", "da-DK");
             //var tempAr = await _service.GetTerms(11, "1", "ar-QA");
         }

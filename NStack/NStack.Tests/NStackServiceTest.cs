@@ -21,7 +21,7 @@ namespace NStack.Tests
             var service = new NStackLocalizeService(new NStackRepository(Model));
             try
             {
-                var temp = service.GetLanguages(NStackPlatform.Backend).Result;
+                var temp = service.GetLanguagesAsync(NStackPlatform.Backend).Result;
                 var something = temp.Data;
             }
             catch(Exception)
@@ -38,7 +38,7 @@ namespace NStack.Tests
             var service = new NStackLocalizeService(new NStackRepository(Model));
             try
             {
-                var temp = service.GetResource(1208).Result;
+                var temp = service.GetResourceAsync(1208).Result;
                 var something = temp.Data;
             }
             catch (Exception)

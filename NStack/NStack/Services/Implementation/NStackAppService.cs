@@ -27,7 +27,7 @@ namespace NStack.SDK.Services.Implementation
             _howOftenToCheckInMinutes = howOftenToCheckInMinutes ?? 5;
         }
 
-        public async Task<DataAppOpenWrapper> AppOpen<TSection>(NStackPlatform platform,
+        public async Task<DataAppOpenWrapper> AppOpenAsync<TSection>(NStackPlatform platform,
                                                       Guid userId,
                                                       string version,
                                                       string environment = "production",
@@ -70,12 +70,12 @@ namespace NStack.SDK.Services.Implementation
             return response;
         }
 
-        public Task<DataAppOpenWrapper> AppOpen(NStackPlatform platform,
+        public Task<DataAppOpenWrapper> AppOpenAsync(NStackPlatform platform,
                                                       Guid userId,
                                                       string version,
                                                       string environment = "production",
                                                       bool developmentEnvironment = false,
-                                                      bool productionEnvironment = true) => AppOpen<ResourceItem>(platform, userId, version, environment, developmentEnvironment, productionEnvironment);
+                                                      bool productionEnvironment = true) => AppOpenAsync<ResourceItem>(platform, userId, version, environment, developmentEnvironment, productionEnvironment);
 
         private string GetLastUpdatedString()
         {
@@ -103,7 +103,7 @@ namespace NStack.SDK.Services.Implementation
             };
         }
 
-        public async Task<DataMetaWrapper<TSection>> GetResource<TSection>(string locale,
+        public async Task<DataMetaWrapper<TSection>> GetResourceAsync<TSection>(string locale,
                                                                            NStackPlatform platform,
                                                                            string version,
                                                                            string environment = "production",
@@ -116,7 +116,7 @@ namespace NStack.SDK.Services.Implementation
             if (!AppOpenIsExpired() && _memoryCache.TryGetValue<DataMetaWrapper<TSection>>($"{LocalizationCacheKeyPrefix}{locale}", out DataMetaWrapper<TSection> localization))
                 return localization;
 
-            DataAppOpenWrapper appOpenData = await AppOpen(platform, Guid.NewGuid(), version, environment, developmentEnvironment, productionEnvironment);
+            DataAppOpenWrapper appOpenData = await AppOpenAsync(platform, Guid.NewGuid(), version, environment, developmentEnvironment, productionEnvironment);
 
             if (appOpenData == null)
                 return null;
@@ -127,19 +127,19 @@ namespace NStack.SDK.Services.Implementation
             return _memoryCache.Get<DataMetaWrapper<TSection>>($"{LocalizationCacheKeyPrefix}default");
         }
 
-        public Task<DataMetaWrapper<ResourceItem>> GetResource(string locale,
+        public Task<DataMetaWrapper<ResourceItem>> GetResourceAsync(string locale,
                                                                NStackPlatform platform,
                                                                string version,
                                                                string environment = "production",
                                                                bool developmentEnvironment = false,
-                                                               bool productionEnvironment = true) => GetResource<ResourceItem>(locale, platform, version, environment, developmentEnvironment, productionEnvironment);
+                                                               bool productionEnvironment = true) => GetResourceAsync<ResourceItem>(locale, platform, version, environment, developmentEnvironment, productionEnvironment);
 
-        public async Task<DataMetaWrapper<TSection>> GetDefaultResource<TSection>(NStackPlatform platform, string version, string environment = "production", bool developmentEnvironment = false, bool productionEnvironment = true) where TSection : ResourceItem
+        public async Task<DataMetaWrapper<TSection>> GetDefaultResourceAsync<TSection>(NStackPlatform platform, string version, string environment = "production", bool developmentEnvironment = false, bool productionEnvironment = true) where TSection : ResourceItem
         {
             if (!AppOpenIsExpired() && _memoryCache.TryGetValue<DataMetaWrapper<TSection>>($"{LocalizationCacheKeyPrefix}default", out DataMetaWrapper<TSection> localization))
                 return localization;
 
-            var appOpenData = await AppOpen(platform, Guid.NewGuid(), version, environment, developmentEnvironment, productionEnvironment);
+            var appOpenData = await AppOpenAsync(platform, Guid.NewGuid(), version, environment, developmentEnvironment, productionEnvironment);
 
             if (appOpenData == null)
                 return null;
@@ -147,11 +147,11 @@ namespace NStack.SDK.Services.Implementation
             return _memoryCache.Get<DataMetaWrapper<TSection>>($"{LocalizationCacheKeyPrefix}default");
         }
 
-        public Task<DataMetaWrapper<ResourceItem>> GetDefaultResource(NStackPlatform platform,
+        public Task<DataMetaWrapper<ResourceItem>> GetDefaultResourceAsync(NStackPlatform platform,
                                                                       string version,
                                                                       string environment = "production",
                                                                       bool developmentEnvironment = false,
-                                                                      bool productionEnvironment = true) => GetDefaultResource<ResourceItem>(platform, version, environment, developmentEnvironment, productionEnvironment);
+                                                                      bool productionEnvironment = true) => GetDefaultResourceAsync<ResourceItem>(platform, version, environment, developmentEnvironment, productionEnvironment);
 
         private bool AppOpenIsExpired() => !_memoryCache.TryGetValue<DateTime>(LastUpdatedCacheKey, out DateTime lastUpdated) 
                                             || lastUpdated < DateTime.UtcNow.AddMinutes(_howOftenToCheckInMinutes * -1);
@@ -165,7 +165,7 @@ namespace NStack.SDK.Services.Implementation
             if (!localizeToFetch.ShouldUpdate && _memoryCache.TryGetValue<DataMetaWrapper<TSection>>($"{LocalizationCacheKeyPrefix}{localizeToFetch.Language.Locale}", out DataMetaWrapper<TSection> localization))
                 return localization;
 
-            localization = await _localizeService.GetResource<TSection>(localizeToFetch.Id);
+            localization = await _localizeService.GetResourceAsync<TSection>(localizeToFetch.Id);
 
             if (localization != null)
             {
