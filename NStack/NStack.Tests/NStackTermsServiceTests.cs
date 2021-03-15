@@ -4,6 +4,7 @@ using NStack.SDK.Repositories;
 using NStack.SDK.Repositories.Implementation;
 using NStack.SDK.Services.Implementation;
 using NUnit.Framework;
+using System;
 using System.Threading.Tasks;
 
 namespace NStack.SDK.Tests
@@ -16,57 +17,113 @@ namespace NStack.SDK.Tests
         [SetUp]
         public void Initialize()
         {
-            _repository = new Mock<INStackRepository>();
+            _repository = new Mock<INStackRepository>(MockBehavior.Loose);
 
-            var repository = new NStackRepository(new NStackConfiguration
-            {
-                ApiKey = "qd1GiPnq8sJuChbFxjOQxV9t1AN71oIMBuWF",
-                ApplicationId = "9vJhjXzSBUxBOuQx2B2mFIZSoa2aK4UJzt7y"
-            });
-
-            _service = new NStackTermsService(repository);
+            _service = new NStackTermsService(_repository.Object);
         }
 
         [Test]
-        public async Task RemoveMeGetAll()
+        public void GetAllTermsAsyncLanguageIsNullThrowsException()
         {
-            var temp = await _service.GetAllTermsAsync("en-GB");
-            var tempDa = await _service.GetAllTermsAsync("da-DK");
-            var tempAr = await _service.GetAllTermsAsync("ar-QA");
+            ArgumentNullException exception = Assert.ThrowsAsync<ArgumentNullException>(() => _service.GetAllTermsAsync(null));
+
+            Assert.AreEqual("language", exception.ParamName);
         }
 
         [Test]
-        public async Task RemoveMeGetVersions()
+        public void GetTermsVersionsAsyncTermsIdNullThrowsException()
         {
-            var temp = await _service.GetTermsVersionsAsync("terms", "1", "en-GB");
-            var tempDa = await _service.GetTermsVersionsAsync("terms", "1", "da-DK");
-            var tempAr = await _service.GetTermsVersionsAsync("terms", "1", "ar-QA");
+            ArgumentNullException exception = Assert.ThrowsAsync<ArgumentNullException>(() => _service.GetTermsVersionsAsync(null, "userId", "language"));
+
+            Assert.AreEqual("termsId", exception.ParamName);
         }
 
         [Test]
-        public async Task RemoveMeGetNewest()
+        public void GetTermsVersionsAsyncUserIdNullThrowsException()
         {
-            var temp = await _service.GetNewestTermsAsync("terms", "1", "en-GB");
-            var tempDa = await _service.GetNewestTermsAsync("terms", "1", "da-DK");
-            var tempAr = await _service.GetNewestTermsAsync("terms", "1", "ar-QA");
+            ArgumentNullException exception = Assert.ThrowsAsync<ArgumentNullException>(() => _service.GetTermsVersionsAsync("termsId", null, "language"));
+
+            Assert.AreEqual("userId", exception.ParamName);
         }
 
         [Test]
-        public async Task RemoveMeGetTerms()
+        public void GetTermsVersionsAsyncLanguageNullThrowsException()
         {
-            var temp = await _service.GetTermsAsync(11, "1", "en-GB");
-            var tempDa = await _service.GetTermsAsync(11, "1", "da-DK");
-            var tempAr = await _service.GetTermsAsync(11, "1", "ar-QA");
+            ArgumentNullException exception = Assert.ThrowsAsync<ArgumentNullException>(() => _service.GetTermsVersionsAsync("termsId", "userId", null));
+
+            Assert.AreEqual("language", exception.ParamName);
         }
 
         [Test]
-        public async Task RemoveMeMarkRead()
+        public void GetNewestTermsAsyncTermsIdNullThrowsException()
         {
-            var temp = await _service.MarkReadAsync(11, "1", "en-GB");
+            ArgumentNullException exception = Assert.ThrowsAsync<ArgumentNullException>(() => _service.GetNewestTermsAsync(null, "userId", "language"));
 
-            var temp2 = await _service.GetTermsAsync(11, "1", "en-GB");
-            //var tempDa = await _service.GetTerms(11, "1", "da-DK");
-            //var tempAr = await _service.GetTerms(11, "1", "ar-QA");
+            Assert.AreEqual("termsId", exception.ParamName);
+        }
+
+        [Test]
+        public void GetNewestTermsAsyncUserIdNullThrowsException()
+        {
+            ArgumentNullException exception = Assert.ThrowsAsync<ArgumentNullException>(() => _service.GetNewestTermsAsync("termsId", null, "language"));
+
+            Assert.AreEqual("userId", exception.ParamName);
+        }
+
+        [Test]
+        public void GetNewestTermsAsyncLanguageNullThrowsException()
+        {
+            ArgumentNullException exception = Assert.ThrowsAsync<ArgumentNullException>(() => _service.GetNewestTermsAsync("termsId", "userId", null));
+
+            Assert.AreEqual("language", exception.ParamName);
+        }
+
+        [Test]
+        public void GetTermsAsyncTermsIdTooLowThrowsException()
+        {
+            ArgumentException exception = Assert.ThrowsAsync<ArgumentException>(() => _service.GetTermsAsync(-42, "userId", "language"));
+
+            Assert.AreEqual("termsId", exception.ParamName);
+        }
+
+        [Test]
+        public void GetTermsAsyncUserIdNullThrowsException()
+        {
+            ArgumentNullException exception = Assert.ThrowsAsync<ArgumentNullException>(() => _service.GetTermsAsync(42, null, "language"));
+
+            Assert.AreEqual("userId", exception.ParamName);
+        }
+
+        [Test]
+        public void GetTermsAsyncLanguageNullThrowsException()
+        {
+            ArgumentNullException exception = Assert.ThrowsAsync<ArgumentNullException>(() => _service.GetTermsAsync(42, "userId", null));
+
+            Assert.AreEqual("language", exception.ParamName);
+        }
+
+        [Test]
+        public void MarkReadAsyncTermsIdTooLowThrowsException()
+        {
+            ArgumentException exception = Assert.ThrowsAsync<ArgumentException>(() => _service.MarkReadAsync(-42, "userId", "language"));
+
+            Assert.AreEqual("termsId", exception.ParamName);
+        }
+
+        [Test]
+        public void MarkReadAsyncUserIdNullThrowsException()
+        {
+            ArgumentNullException exception = Assert.ThrowsAsync<ArgumentNullException>(() => _service.MarkReadAsync(42, null, "language"));
+
+            Assert.AreEqual("userId", exception.ParamName);
+        }
+
+        [Test]
+        public void MarkReadAsyncLanguageNullThrowsException()
+        {
+            ArgumentNullException exception = Assert.ThrowsAsync<ArgumentNullException>(() => _service.MarkReadAsync(42, "userId", null));
+
+            Assert.AreEqual("language", exception.ParamName);
         }
     }
 }
