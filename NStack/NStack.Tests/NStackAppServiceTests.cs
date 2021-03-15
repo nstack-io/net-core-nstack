@@ -73,6 +73,7 @@ namespace NStack.SDK.Tests
             _service = new NStackAppService(_repository.Object, _localizeService.Object, _memoryCache);
         }
 
+        #region GetResourceAsync
         [Test]
         public void GetResourceAsyncNullLocaleThrowsException()
         {
@@ -150,12 +151,71 @@ namespace NStack.SDK.Tests
             _repository.Verify(s => s.DoRequestAsync<DataAppOpenWrapper>(It.IsAny<IRestRequest>(), It.IsAny<Action<HttpStatusCode>>()), Times.Exactly(3));
             _localizeService.Verify(s => s.GetResourceAsync<TranslationData>(LanguageId), Times.Exactly(2));
         }
+        #endregion
 
+        #region GetDefaultResourceAsync
         [Test]
         public void GetDefaultResourceAsyncTrueDevelopmentAndProductionThrowsException()
         {
             Assert.ThrowsAsync<ArgumentException>(() => _service.GetDefaultResourceAsync(NStackPlatform.Web, "1.0.0", developmentEnvironment: true, productionEnvironment: true));
         }
+
+        [Test]
+        public async Task GetDefaultResourceAsyncFetchesLocalization()
+        {
+            ResetCounters();
+
+            DataMetaWrapper<TranslationData> resource = await _service.GetDefaultResourceAsync<TranslationData>(NStackPlatform.Web, "1.0.0");
+
+            Assert.AreEqual(_danish, resource);
+        }
+
+        [Test]
+        public async Task GetDefaultResourceAsyncDoesntFetchLocalizationOnSecondCall()
+        {
+            ResetCounters();
+
+            DataMetaWrapper<TranslationData> resource = await _service.GetDefaultResourceAsync<TranslationData>(NStackPlatform.Web, "1.0.0");
+            DataMetaWrapper<TranslationData> resource2 = await _service.GetDefaultResourceAsync<TranslationData>(NStackPlatform.Web, "1.0.0");
+
+            _repository.Verify(s => s.DoRequestAsync<DataAppOpenWrapper>(It.IsAny<IRestRequest>(), It.IsAny<Action<HttpStatusCode>>()), Times.Once());
+            _localizeService.Verify(s => s.GetResourceAsync<TranslationData>(LanguageId), Times.Once());
+        }
+
+        [Test]
+        public async Task GetDefaultResourceAsyncFetchLocalizationOnSecondCallOnExpiry()
+        {
+            ResetCounters();
+
+            DataMetaWrapper<TranslationData> resource = await _service.GetDefaultResourceAsync<TranslationData>(NStackPlatform.Web, "1.0.0");
+
+            _memoryCache.Set<DateTime>("nstack-last-updated", DateTime.UtcNow.AddHours(-2));
+
+            DataMetaWrapper<TranslationData> resource2 = await _service.GetDefaultResourceAsync<TranslationData>(NStackPlatform.Web, "1.0.0");
+
+            _repository.Verify(s => s.DoRequestAsync<DataAppOpenWrapper>(It.IsAny<IRestRequest>(), It.IsAny<Action<HttpStatusCode>>()), Times.Exactly(2));
+            _localizeService.Verify(s => s.GetResourceAsync<TranslationData>(LanguageId), Times.Exactly(2));
+        }
+
+        [Test]
+        public async Task GetDefaultResourceAsyncHonoursShouldUpdate()
+        {
+            ResetCounters();
+
+            DataMetaWrapper<TranslationData> resource = await _service.GetDefaultResourceAsync<TranslationData>(NStackPlatform.Web, "1.0.0");
+
+            _memoryCache.Set<DateTime>("nstack-last-updated", DateTime.UtcNow.AddHours(-2));
+
+            DataMetaWrapper<TranslationData> resource2 = await _service.GetDefaultResourceAsync<TranslationData>(NStackPlatform.Web, "1.0.0");
+
+            _memoryCache.Set<DateTime>("nstack-last-updated", DateTime.UtcNow.AddHours(-2));
+
+            DataMetaWrapper<TranslationData> resource3 = await _service.GetDefaultResourceAsync<TranslationData>(NStackPlatform.Web, "1.0.0");
+
+            _repository.Verify(s => s.DoRequestAsync<DataAppOpenWrapper>(It.IsAny<IRestRequest>(), It.IsAny<Action<HttpStatusCode>>()), Times.Exactly(3));
+            _localizeService.Verify(s => s.GetResourceAsync<TranslationData>(LanguageId), Times.Exactly(2));
+        }
+        #endregion
 
         private void ResetCounters()
         {
