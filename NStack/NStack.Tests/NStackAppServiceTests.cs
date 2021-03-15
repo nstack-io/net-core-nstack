@@ -21,6 +21,7 @@ namespace NStack.SDK.Tests
         private NStackAppService _service;
         private Mock<INStackRepository> _repository;
         private Mock<INStackLocalizeService> _localizeService;
+        private IMemoryCache _memoryCache;
         private DataMetaWrapper<TranslationData> _danish;
         private const int LanguageId = 42;
         private const string LanguageLocale = "da-DK";
@@ -67,7 +68,9 @@ namespace NStack.SDK.Tests
             services.AddMemoryCache();
             var serviceProvider = services.BuildServiceProvider();
 
-            _service = new NStackAppService(_repository.Object, _localizeService.Object, serviceProvider.GetService<IMemoryCache>());
+            _memoryCache = serviceProvider.GetService<IMemoryCache>();
+
+            _service = new NStackAppService(_repository.Object, _localizeService.Object, _memoryCache);
         }
 
         [Test]
@@ -95,6 +98,8 @@ namespace NStack.SDK.Tests
         [Test]
         public async Task GetResourceAsyncFetchesLocalization()
         {
+            ResetCounters();
+
             DataMetaWrapper<TranslationData> resource = await _service.GetResourceAsync<TranslationData>(LanguageLocale, NStackPlatform.Web, "1.0.0");
 
             Assert.AreEqual(_danish, resource);
@@ -103,22 +108,61 @@ namespace NStack.SDK.Tests
         [Test]
         public async Task GetResourceAsyncDoesntFetchLocalizationOnSecondCall()
         {
+            ResetCounters();
+
             DataMetaWrapper<TranslationData> resource = await _service.GetResourceAsync<TranslationData>(LanguageLocale, NStackPlatform.Web, "1.0.0");
             DataMetaWrapper<TranslationData> resource2 = await _service.GetResourceAsync<TranslationData>(LanguageLocale, NStackPlatform.Web, "1.0.0");
 
+            _repository.Verify(s => s.DoRequestAsync<DataAppOpenWrapper>(It.IsAny<IRestRequest>(), It.IsAny<Action<HttpStatusCode>>()), Times.Once());
             _localizeService.Verify(s => s.GetResourceAsync<TranslationData>(LanguageId), Times.Once());
         }
 
         [Test]
         public async Task GetResourceAsyncFetchLocalizationOnSecondCallOnExpiry()
         {
+            ResetCounters();
 
+            DataMetaWrapper<TranslationData> resource = await _service.GetResourceAsync<TranslationData>(LanguageLocale, NStackPlatform.Web, "1.0.0");
+
+            _memoryCache.Set<DateTime>("nstack-last-updated", DateTime.UtcNow.AddHours(-2));
+
+            DataMetaWrapper<TranslationData> resource2 = await _service.GetResourceAsync<TranslationData>(LanguageLocale, NStackPlatform.Web, "1.0.0");
+
+            _repository.Verify(s => s.DoRequestAsync<DataAppOpenWrapper>(It.IsAny<IRestRequest>(), It.IsAny<Action<HttpStatusCode>>()), Times.Exactly(2));
+            _localizeService.Verify(s => s.GetResourceAsync<TranslationData>(LanguageId), Times.Exactly(2));
+        }
+
+        [Test]
+        public async Task GetResourceAsyncHonoursShouldUpdate()
+        {
+            ResetCounters();
+
+            DataMetaWrapper<TranslationData> resource = await _service.GetResourceAsync<TranslationData>(LanguageLocale, NStackPlatform.Web, "1.0.0");
+
+            _memoryCache.Set<DateTime>("nstack-last-updated", DateTime.UtcNow.AddHours(-2));
+
+            DataMetaWrapper<TranslationData> resource2 = await _service.GetResourceAsync<TranslationData>(LanguageLocale, NStackPlatform.Web, "1.0.0");
+
+            _memoryCache.Set<DateTime>("nstack-last-updated", DateTime.UtcNow.AddHours(-2));
+
+            DataMetaWrapper<TranslationData> resource3 = await _service.GetResourceAsync<TranslationData>(LanguageLocale, NStackPlatform.Web, "1.0.0");
+
+            _repository.Verify(s => s.DoRequestAsync<DataAppOpenWrapper>(It.IsAny<IRestRequest>(), It.IsAny<Action<HttpStatusCode>>()), Times.Exactly(3));
+            _localizeService.Verify(s => s.GetResourceAsync<TranslationData>(LanguageId), Times.Exactly(2));
         }
 
         [Test]
         public void GetDefaultResourceAsyncTrueDevelopmentAndProductionThrowsException()
         {
             Assert.ThrowsAsync<ArgumentException>(() => _service.GetDefaultResourceAsync(NStackPlatform.Web, "1.0.0", developmentEnvironment: true, productionEnvironment: true));
+        }
+
+        private void ResetCounters()
+        {
+            _memoryCache.Remove("nstack-last-updated");
+            _memoryCache.Remove($"nstack-localization-{LanguageLocale}");
+            _memoryCache.Remove("nstack-localization-default");
+            appOpenCount = 0;
         }
 
         private static int appOpenCount = 0;
@@ -145,7 +189,7 @@ namespace NStack.SDK.Tests
                                 Name = "Danish"
                             },
                             LastUpdatedAt = DateTime.UtcNow.AddMonths(-1),
-                            ShouldUpdate = appOpenCount++ < 1,
+                            ShouldUpdate = appOpenCount++ < 2,
                             Url = "https://nstack.io"
                         }
                     },
