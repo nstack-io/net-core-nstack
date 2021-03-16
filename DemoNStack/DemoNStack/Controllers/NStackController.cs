@@ -20,7 +20,7 @@ namespace DemoNStack.Controllers
 
         protected async Task<DataMetaWrapper<Translation>> GetTranslations()
         {
-            return await NStackAppService.GetResourceAsync<Translation>(Request.GetCurrentLanguage(), NStackPlatform.Web, "1.3.0");
+            return await NStackAppService.GetResourceAsync<Translation>(Request.GetCurrentLanguage(), NStackPlatform.Web, "1.3.1");
         }
 
         protected Guid GetUserId()
