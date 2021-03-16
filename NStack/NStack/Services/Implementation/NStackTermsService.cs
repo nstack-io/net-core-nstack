@@ -18,8 +18,8 @@ namespace NStack.SDK.Services.Implementation
 
         public Task<DataWrapper<IEnumerable<TermsEntry>>> GetAllTermsAsync(string language)
         {
-            if (language == null)
-                throw new ArgumentNullException(nameof(language));
+            if (string.IsNullOrWhiteSpace(language))
+                throw new ArgumentException("No string received", nameof(language));
 
             var request = new RestRequest("api/v2/content/terms", Method.GET);
             request.AddHeader("Accept-Language", language);
@@ -29,12 +29,12 @@ namespace NStack.SDK.Services.Implementation
 
         public Task<DataWrapper<IEnumerable<Terms>>> GetTermsVersionsAsync(string termsId, string userId, string language)
         {
-            if (termsId == null)
-                throw new ArgumentNullException(nameof(termsId));
-            if (userId == null)
-                throw new ArgumentNullException(nameof(userId));
-            if (language == null)
-                throw new ArgumentNullException(nameof(language));
+            if (string.IsNullOrWhiteSpace(termsId))
+                throw new ArgumentException("No string received", nameof(termsId));
+            if (string.IsNullOrWhiteSpace(userId))
+                throw new ArgumentException("No string received", nameof(userId));
+            if (string.IsNullOrWhiteSpace(language))
+                throw new ArgumentException("No string received", nameof(language));
 
             var request = new RestRequest($"api/v2/content/terms/{termsId}/versions");
             request.AddQueryParameter("guid", userId);
@@ -45,12 +45,12 @@ namespace NStack.SDK.Services.Implementation
 
         public Task<DataWrapper<TermsWithContent>> GetNewestTermsAsync(string termsId, string userId, string language)
         {
-            if (termsId == null)
-                throw new ArgumentNullException(nameof(termsId));
-            if (userId == null)
-                throw new ArgumentNullException(nameof(userId));
-            if (language == null)
-                throw new ArgumentNullException(nameof(language));
+            if (string.IsNullOrWhiteSpace(termsId))
+                throw new ArgumentException("No string received", nameof(termsId));
+            if (string.IsNullOrWhiteSpace(userId))
+                throw new ArgumentException("No string received", nameof(userId));
+            if (string.IsNullOrWhiteSpace(language))
+                throw new ArgumentException("No string received", nameof(language));
 
             var request = new RestRequest($"api/v2/content/terms/{termsId}/versions/newest", Method.GET);
             request.AddQueryParameter("guid", userId);
@@ -63,10 +63,10 @@ namespace NStack.SDK.Services.Implementation
         {
             if (termsId < 0)
                 throw new ArgumentException($"Expected an ID of 0 or higher. Got {termsId}", nameof(termsId));
-            if (userId == null)
-                throw new ArgumentNullException(nameof(userId));
-            if (language == null)
-                throw new ArgumentNullException(nameof(language));
+            if (string.IsNullOrWhiteSpace(userId))
+                throw new ArgumentException("No string received", nameof(userId));
+            if (string.IsNullOrWhiteSpace(language))
+                throw new ArgumentException("No string received", nameof(language));
 
             var request = new RestRequest($"api/v2/content/terms/versions/{termsId}", Method.GET);
             request.AddQueryParameter("guid", userId);
@@ -79,10 +79,10 @@ namespace NStack.SDK.Services.Implementation
         {
             if (termsId < 0)
                 throw new ArgumentException($"Expected an ID of 0 or higher. Got {termsId}", nameof(termsId));
-            if (userId == null)
-                throw new ArgumentNullException(nameof(userId));
-            if (language == null)
-                throw new ArgumentNullException(nameof(language));
+            if (string.IsNullOrWhiteSpace(userId))
+                throw new ArgumentException("No string received", nameof(userId));
+            if (string.IsNullOrWhiteSpace(language))
+                throw new ArgumentException("No string received", nameof(language));
 
             var request = new RestRequest($"api/v2/content/terms/versions/views", Method.POST);
             request.AddJsonBody(new
