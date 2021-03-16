@@ -3,7 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using NStack.SDK.Models;
 using NStack.SDK.Repositories;
-using NStack.SDK.Repositories.Implementation;
 using NStack.SDK.Services;
 using NStack.SDK.Services.Implementation;
 using NStack.Tests.Translations;
