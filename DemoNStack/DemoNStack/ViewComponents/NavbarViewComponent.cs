@@ -23,7 +23,7 @@ namespace DemoNStack.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var res = await NStackAppService.GetResourceAsync<Translation>(Request.GetCurrentLanguage(), NStackPlatform.Web, "1.3.0");
+            var res = await NStackAppService.GetResourceAsync<Translation>(Request.GetCurrentLanguage(), NStackPlatform.Web, "1.3.1");
 
             var viewModel = new NavbarViewModel
             {
