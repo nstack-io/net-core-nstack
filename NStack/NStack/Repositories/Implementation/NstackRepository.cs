@@ -22,7 +22,6 @@ public class NStackRepository : INStackRepository
 
         Client = new RestClient(options);
 
-        Client.AddDefaultHeader("X-Application-Id", configuration.ApplicationId);
         Client.AddDefaultHeaders(new Dictionary<string, string>
         {
             { "X-Application-Id", configuration.ApplicationId },

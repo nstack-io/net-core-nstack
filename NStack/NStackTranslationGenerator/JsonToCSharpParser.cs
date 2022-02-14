@@ -14,7 +14,7 @@ public static class JsonToCSharpParser
         sb.AppendLine($"namespace {targetNamespace};");
         sb.AppendLine("");
         sb.AppendLine($"public class {resourceItemName} : ResourceItem");
-        sb.AppendLine("{{");
+        sb.AppendLine("{");
         sb.AppendLine($"{AddTabs(1)}public {resourceItemName}() : base() {{ }}");
         sb.AppendLine($"{AddTabs(1)}public {resourceItemName}(ResourceItem item) : base(item) {{ }}");
         sb.AppendLine("");
@@ -31,7 +31,7 @@ public static class JsonToCSharpParser
             ParseResourceInnerItem(dictionary, resourceInnerItem.Value, targetNamespace);
         }
 
-        sb.AppendLine("}}");
+        sb.AppendLine("}");
 
         dictionary.Add(resourceItemName, sb.ToString());
 
@@ -49,7 +49,7 @@ public static class JsonToCSharpParser
         sb.AppendLine($"namespace {targetNameSpace};");
         sb.AppendLine("");
         sb.AppendLine($"public class {sectionName}Section : ResourceInnerItem");
-        sb.AppendLine("{{");
+        sb.AppendLine("{");
         sb.AppendLine($"{AddTabs(1)}public {sectionName}Section() : base() {{ }}");
         sb.AppendLine($"{AddTabs(1)}public {sectionName}Section(ResourceInnerItem item) : base(item) {{ }}");
         sb.AppendLine("");
@@ -60,7 +60,7 @@ public static class JsonToCSharpParser
             sb.AppendLine($"{AddTabs(1)}public string {name} => this[nameof({name}).FirstCharToLower()];");
         }
 
-        sb.AppendLine("}}");
+        sb.AppendLine("}");
 
         dictionary.Add($"{sectionName}Section", sb.ToString());
     }
