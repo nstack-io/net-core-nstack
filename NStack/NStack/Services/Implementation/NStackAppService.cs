@@ -34,16 +34,7 @@ public class NStackAppService : INStackAppService
         var request = new RestRequest("api/v2/open", Method.Post);
         request.AddHeader("N-Meta", $"{GetPlatformString(platform)};{environment};");
 
-        request.AddJsonBody(new
-        {
-            platform = GetPlatformString(platform),
-            guid = userId,
-            version = version,
-            old_version = GetOldVersion() ?? version,
-            last_updated = GetLastUpdatedString(),
-            dev = developmentEnvironment,
-            test = !productionEnvironment
-        }, "application/x-www-form-urlencoded");
+        request.AddStringBody($"platform={GetPlatformString(platform)}&guid={userId}&version={version}&old_version={GetOldVersion(version)}&last_updated={GetLastUpdatedString()}&dev={developmentEnvironment}&test={!productionEnvironment}", "application/x-www-form-urlencoded");
 
         var response = await _repository.DoRequestAsync<DataAppOpenWrapper>(request);
 
@@ -76,12 +67,12 @@ public class NStackAppService : INStackAppService
         return string.Empty;
     }
 
-    private string GetOldVersion()
+    private string GetOldVersion(string fallback)
     {
         if (_memoryCache.TryGetValue<string>(OldVersionCacheKey, out string oldVersion))
             return oldVersion;
 
-        return string.Empty;
+        return fallback;
     }
 
     private string GetPlatformString(NStackPlatform platform)
