@@ -1,0 +1,13 @@
+﻿global using Microsoft.Extensions.Caching.Memory;
+global using Microsoft.Extensions.DependencyInjection;
+global using Moq;
+global using NStack.SDK.Extensions;
+global using NStack.SDK.Models;
+global using NStack.SDK.Repositories;
+global using NStack.SDK.Repositories.Implementation;
+global using NStack.SDK.Services;
+global using NStack.SDK.Services.Implementation;
+global using NStack.Tests.Translations;
+global using NUnit.Framework;
+global using RestSharp;
+global using System.Net;

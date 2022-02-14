@@ -1,11 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
-using NStack.SDK.Models;
+﻿using NStack.SDK.Models;
 using RestSharp;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace NStackTranslationGenerator
 {

@@ -1,7 +1,6 @@
-﻿namespace NStack.SDK.Models
+﻿namespace NStack.SDK.Models;
+
+public class DataWrapper<T> where T : new()
 {
-    public class DataWrapper<T>
-    {
-        public T Data { get; set; }
-    }
+    public T Data { get; set; } = new T();
 }

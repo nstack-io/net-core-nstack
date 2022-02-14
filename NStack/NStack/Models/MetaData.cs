@@ -1,8 +1,7 @@
-﻿namespace NStack.SDK.Models
+﻿namespace NStack.SDK.Models;
+
+public class MetaData
 {
-    public class MetaData
-    {
-        public Language Language { get; set; }
-        public ResourcePlatform Platform { get; set; }
-    }
+    public Language Language { get; set; } = new Language();
+    public ResourcePlatform Platform { get; set; } = new ResourcePlatform();
 }

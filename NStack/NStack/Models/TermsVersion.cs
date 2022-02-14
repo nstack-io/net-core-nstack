@@ -1,20 +1,16 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿namespace NStack.SDK.Models;
 
-namespace NStack.SDK.Models
+public class TermsVersion
 {
-    public class TermsVersion
-    {
-        public int Id { get; set; }
+    public int Id { get; set; }
 
-        public string Version { get; set; }
+    public string Version { get; set; } = string.Empty;
 
-        [JsonProperty("version_name")]
-        public string VersionName { get; set; }
+    [JsonPropertyName("version_name")]
+    public string VersionName { get; set; } = string.Empty;
 
-        [JsonProperty("published_at")]
-        public DateTime PublishedAt { get; set; }
+    [JsonPropertyName("published_at")]
+    public DateTime PublishedAt { get; set; }
 
-        public bool HasViewed { get; set; }
-    }
+    public bool HasViewed { get; set; }
 }

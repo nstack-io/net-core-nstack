@@ -1,8 +1,7 @@
-﻿namespace NStack.SDK.Models
+﻿namespace NStack.SDK.Models;
+
+public class DataMetaWrapper<T> where T : new()
 {
-    public class DataMetaWrapper<T>
-    {
-        public T Data { get; set; }
-        public MetaData Meta { get; set; }
-    }
+    public T Data { get; set; } = new T();
+    public MetaData Meta { get; set; } = new MetaData();
 }

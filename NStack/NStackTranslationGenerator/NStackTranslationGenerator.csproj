@@ -5,6 +5,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <PackageIcon>Nodes logo.png</PackageIcon>
     <Version>1.1.1</Version>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>

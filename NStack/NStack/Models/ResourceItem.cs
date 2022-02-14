@@ -1,16 +1,13 @@
-﻿using System.Collections.Concurrent;
+﻿namespace NStack.SDK.Models;
 
-namespace NStack.SDK.Models
+public class ResourceItem: ConcurrentDictionary<string, ResourceInnerItem>
 {
-    public class ResourceItem: ConcurrentDictionary<string, ResourceInnerItem>
+    public ResourceItem() { }
+    public ResourceItem(ResourceItem item)
     {
-        public ResourceItem() { }
-        public ResourceItem(ResourceItem item)
+        foreach (var i in item)
         {
-            foreach (var i in item)
-            {
-                TryAdd(i.Key, i.Value);
-            }
+            TryAdd(i.Key, i.Value);
         }
     }
 }

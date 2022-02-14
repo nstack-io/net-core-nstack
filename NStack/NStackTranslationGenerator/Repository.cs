@@ -1,7 +1,6 @@
 ﻿using NStack.SDK.Models;
 using NStack.SDK.Repositories.Implementation;
 using RestSharp;
-using System.Threading.Tasks;
 
 namespace NStackTranslationGenerator
 {

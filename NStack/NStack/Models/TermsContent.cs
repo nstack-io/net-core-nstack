@@ -1,8 +1,7 @@
-﻿namespace NStack.SDK.Models
+﻿namespace NStack.SDK.Models;
+
+public class TermsContent
 {
-    public class TermsContent
-    {
-        public string Data { get; set; }
-        public string Locale { get; set; }
-    }
+    public string Data { get; set; } = string.Empty;
+    public string Locale { get; set; } = string.Empty;
 }
