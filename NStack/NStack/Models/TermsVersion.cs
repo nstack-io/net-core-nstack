@@ -10,7 +10,18 @@ public class TermsVersion
     public string VersionName { get; set; } = string.Empty;
 
     [JsonPropertyName("published_at")]
-    public DateTime PublishedAt { get; set; }
+    public string PublishedAtString { get; set; } = string.Empty;
+
+    public DateTime PublishedAt
+    {
+        get
+        {
+            if (DateTime.TryParseExact(PublishedAtString, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out var result))
+                return result;
+
+            return DateTime.MinValue;
+        }
+    }
 
     public bool HasViewed { get; set; }
 }

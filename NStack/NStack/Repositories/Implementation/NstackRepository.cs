@@ -1,4 +1,7 @@
-﻿namespace NStack.SDK.Repositories.Implementation;
+﻿using RestSharp.Serializers.Json;
+using System.Text.Json;
+
+namespace NStack.SDK.Repositories.Implementation;
 
 public class NStackRepository : INStackRepository
 {
@@ -21,6 +24,14 @@ public class NStackRepository : INStackRepository
         var options = new RestClientOptions(configuration.BaseUrl);
 
         Client = new RestClient(options);
+        Client.UseSystemTextJson(new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true,
+            Converters =
+            {
+                new JsonStringEnumConverter()
+            }
+        });
 
         Client.AddDefaultHeaders(new Dictionary<string, string>
         {
