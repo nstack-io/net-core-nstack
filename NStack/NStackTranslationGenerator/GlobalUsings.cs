@@ -4,3 +4,4 @@ global using NStack.SDK.Models;
 global using NStack.SDK.Repositories.Implementation;
 global using RestSharp;
 global using System.Text;
+global using System.Text.RegularExpressions;
