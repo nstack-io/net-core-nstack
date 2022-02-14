@@ -1,17 +1,17 @@
-# NStack .NET Standard SDK
+# NStack .NET SDK
 Use this SDK to interact with NStack. This SDK contains injectable services to get translations etc. from NStack.
 
 ## Installation
-The SDK is available from the NuGet gallery. The package is called `NStack.SDK`, you can install it by searching for it or by running the following command in the Package Manager Console
+The SDK is available from the NuGet gallery. The package is called `Monstarlab.NStack.SDK`, you can install it by searching for it or by running the following command in the Package Manager Console
 
 ```PowerShell
-Install-Package NStack.SDK
+Install-Package Monstarlab.NStack.SDK
 ```
 
 Or if you're using the dotnet CLI, run the following command:
 
 ```PowerShell
-dotnet add package NStack.SDK
+dotnet add package Monstarlab.NStack.SDK
 ```
 
 ## Configuration

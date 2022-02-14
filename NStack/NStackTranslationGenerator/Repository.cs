@@ -1,26 +1,20 @@
-﻿using NStack.SDK.Models;
-using NStack.SDK.Repositories.Implementation;
-using RestSharp;
-using System.Threading.Tasks;
+﻿namespace NStackTranslationGenerator;
 
-namespace NStackTranslationGenerator
+internal class Repository : NStackRepository
 {
-    internal class Repository : NStackRepository
+    internal Repository(NStackConfiguration configuration) : base(configuration)
     {
-        internal Repository(NStackConfiguration configuration) : base(configuration)
+    }
+
+    internal async Task<string> DoRequest(RestRequest request)
+    {
+        var resp = await Client.ExecuteAsync(request);
+        var code = (int)resp.StatusCode;
+        if (code > 299 || code < 200)
         {
+            return string.Empty;
         }
 
-        internal async Task<string> DoRequest(IRestRequest request)
-        {
-            var resp = await Client.ExecuteAsync(request);
-            var code = (int)resp.StatusCode;
-            if (code > 299 || code < 200)
-            {
-                return null;
-            }
-
-            return resp.Content;
-        }
+        return resp.Content ?? string.Empty;
     }
 }

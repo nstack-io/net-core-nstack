@@ -1,8 +1,7 @@
-﻿namespace NStack.SDK.Models
+﻿namespace NStack.SDK.Models;
+
+public enum LanguageDirection
 {
-    public enum LanguageDirection
-    {
-        LRM,
-        RML
-    }
+    LRM,
+    RML
 }

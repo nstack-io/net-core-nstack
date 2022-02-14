@@ -1,20 +1,15 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+﻿namespace NStack.SDK.Models;
 
-namespace NStack.SDK.Models
+public class Language
 {
-    public class Language
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Locale { get; set; }
-        [JsonConverter(typeof(StringEnumConverter))]
-        public LanguageDirection Direction { get; set; }
-        [JsonProperty("is_default")]
-        public bool IsDefault { get; set; }
-        [JsonProperty("is_best_fit")]
-        public bool IsBestFit { get; set; }
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string Locale { get; set; } = string.Empty;
+    public LanguageDirection Direction { get; set; }
+    [JsonPropertyName("is_default")]
+    public bool IsDefault { get; set; }
+    [JsonPropertyName("is_best_fit")]
+    public bool IsBestFit { get; set; }
 
-        public override string ToString() => $"{Name} ({Locale})";
-    }
+    public override string ToString() => $"{Name} ({Locale})";
 }

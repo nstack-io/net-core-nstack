@@ -1,20 +1,27 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿namespace NStack.SDK.Models;
 
-namespace NStack.SDK.Models
+public class TermsVersion
 {
-    public class TermsVersion
+    public int Id { get; set; }
+
+    public string Version { get; set; } = string.Empty;
+
+    [JsonPropertyName("version_name")]
+    public string VersionName { get; set; } = string.Empty;
+
+    [JsonPropertyName("published_at")]
+    public string PublishedAtString { get; set; } = string.Empty;
+
+    public DateTime PublishedAt
     {
-        public int Id { get; set; }
+        get
+        {
+            if (DateTime.TryParseExact(PublishedAtString, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out var result))
+                return result;
 
-        public string Version { get; set; }
-
-        [JsonProperty("version_name")]
-        public string VersionName { get; set; }
-
-        [JsonProperty("published_at")]
-        public DateTime PublishedAt { get; set; }
-
-        public bool HasViewed { get; set; }
+            return DateTime.MinValue;
+        }
     }
+
+    public bool HasViewed { get; set; }
 }

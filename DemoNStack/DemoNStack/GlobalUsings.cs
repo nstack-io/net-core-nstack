@@ -1,0 +1,12 @@
+﻿global using DemoNStack.Extensions;
+global using DemoNStack.Models;
+global using DemoNStack.Models.ViewModels;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.Extensions.Caching.Memory;
+global using NStack.SDK.Extensions;
+global using NStack.SDK.Models;
+global using NStack.SDK.Repositories;
+global using NStack.SDK.Repositories.Implementation;
+global using NStack.SDK.Services;
+global using NStack.SDK.Services.Implementation;
+global using System.Diagnostics;
