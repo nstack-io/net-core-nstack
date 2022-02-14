@@ -1,36 +1,37 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
 	  <LangVersion>latest</LangVersion>
-	  <Company>Nodes A/S</Company>
+	  <Company>Monstarlab</Company>
 	  <Product>NStack SDK</Product>
 	  <PackageProjectUrl>https://github.com/nstack-io/dotnetstandard-sdk/</PackageProjectUrl>
 	  <RepositoryUrl>https://github.com/nstack-io/dotnetstandard-sdk/</RepositoryUrl>
 	  <RepositoryType>GitHub</RepositoryType>
 	  <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-	  <PackageId>NStack.SDK</PackageId>
-	  <Authors>Nodes A/S</Authors>
-	  <PackageIcon>Nodes logo.png</PackageIcon>
+	  <PackageId>Monstarlab.NStack.SDK</PackageId>
+	  <Authors>Monstarlab</Authors>
+	  <PackageIcon>Monstarlab logo.png</PackageIcon>
 	  <AssemblyName>NStack.SDK</AssemblyName>
 	  <RootNamespace>NStack.SDK</RootNamespace>
-	  <Version>1.3.1</Version>
+	  <Version>2.0.0</Version>
 	  <Description>Use this SDK to interact with NStack. This SDK contains injectable services to get translations etc. from NStack.</Description>
 	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
+	  <ImplicitUsings>enable</ImplicitUsings>
+	  <Nullable>enable</Nullable>
   </PropertyGroup>
 
 	<ItemGroup>
-		<Content Include="../NStackTranslationGenerator/bin/Release/netcoreapp3.1/*.*">
+		<Content Include="../NStackTranslationGenerator/bin/Release/net6.0/*.*">
 			<IncludeInPackage>true</IncludeInPackage>
 			<PackagePath>NStackTranslationGenerator</PackagePath>
 		</Content>
 	</ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="3.1.13" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="RestSharp" Version="106.11.7" />
-    <PackageReference Include="System.Text.Json" Version="5.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="6.0.0" />
+    <PackageReference Include="RestSharp" Version="107.3.0" />
+    <PackageReference Include="System.Text.Json" Version="6.0.2" />
   </ItemGroup>
 	<ItemGroup>
 		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
@@ -41,7 +42,7 @@
 		</AssemblyAttribute>
 	</ItemGroup>
 	<ItemGroup>
-	  <None Include="Nodes logo.png">
+	  <None Include="Monstarlab logo.png">
 	    <Pack>True</Pack>
 	    <PackagePath></PackagePath>
 	  </None>

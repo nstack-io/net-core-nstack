@@ -1,9 +1,8 @@
-﻿namespace NStack.SDK.Models
+﻿namespace NStack.SDK.Models;
+
+public enum NStackPlatform
 {
-    public enum NStackPlatform
-    {
-        Web,
-        Mobile,
-        Backend
-    }
+    Web,
+    Mobile,
+    Backend
 }

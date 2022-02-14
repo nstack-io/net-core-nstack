@@ -1,10 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿namespace NStack.SDK.Models;
 
-namespace NStack.SDK.Models
+public class AppOpenMetaData
 {
-    public class AppOpenMetaData
-    {
-        [JsonProperty("accept_Language")]
-        public string AcceptLanguage { get; set; }
-    }
+    [JsonPropertyName("accept_Language")]
+    public string AcceptLanguage { get; set; } = string.Empty;
 }
