@@ -21,7 +21,7 @@ namespace NStack.SDK.Services.Implementation
             if (string.IsNullOrWhiteSpace(language))
                 throw new ArgumentException("No string received", nameof(language));
 
-            var request = new RestRequest("api/v2/content/terms", Method.GET);
+            var request = new RestRequest("api/v2/content/terms", Method.Get);
             request.AddHeader("Accept-Language", language);
 
             return _repository.DoRequestAsync<DataWrapper<IEnumerable<TermsEntry>>>(request);
@@ -52,7 +52,7 @@ namespace NStack.SDK.Services.Implementation
             if (string.IsNullOrWhiteSpace(language))
                 throw new ArgumentException("No string received", nameof(language));
 
-            var request = new RestRequest($"api/v2/content/terms/{termsId}/versions/newest", Method.GET);
+            var request = new RestRequest($"api/v2/content/terms/{termsId}/versions/newest", Method.Get);
             request.AddQueryParameter("guid", userId);
             request.AddHeader("Accept-Language", language);
 
@@ -68,7 +68,7 @@ namespace NStack.SDK.Services.Implementation
             if (string.IsNullOrWhiteSpace(language))
                 throw new ArgumentException("No string received", nameof(language));
 
-            var request = new RestRequest($"api/v2/content/terms/versions/{termsId}", Method.GET);
+            var request = new RestRequest($"api/v2/content/terms/versions/{termsId}", Method.Get);
             request.AddQueryParameter("guid", userId);
             request.AddHeader("Accept-Language", language);
 
@@ -84,7 +84,7 @@ namespace NStack.SDK.Services.Implementation
             if (string.IsNullOrWhiteSpace(language))
                 throw new ArgumentException("No string received", nameof(language));
 
-            var request = new RestRequest($"api/v2/content/terms/versions/views", Method.POST);
+            var request = new RestRequest($"api/v2/content/terms/versions/views", Method.Post);
             request.AddJsonBody(new
             {
                 term_version_id = termsId,

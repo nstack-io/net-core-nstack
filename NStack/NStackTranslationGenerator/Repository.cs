@@ -11,7 +11,7 @@ namespace NStackTranslationGenerator
         {
         }
 
-        internal async Task<string> DoRequest(IRestRequest request)
+        internal async Task<string> DoRequest(RestRequest request)
         {
             var resp = await Client.ExecuteAsync(request);
             var code = (int)resp.StatusCode;

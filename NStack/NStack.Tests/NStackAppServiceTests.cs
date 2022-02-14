@@ -29,7 +29,7 @@ namespace NStack.SDK.Tests
         public void Initialize()
         {
             _repository = new Mock<INStackRepository>(MockBehavior.Strict);
-            _repository.Setup(r => r.DoRequestAsync<DataAppOpenWrapper>(It.Is<IRestRequest>(s => s.Resource.EndsWith("api/v2/open")), It.IsAny<Action<HttpStatusCode>>()))
+            _repository.Setup(r => r.DoRequestAsync<DataAppOpenWrapper>(It.Is<RestRequest>(s => s.Resource.EndsWith("api/v2/open")), It.IsAny<Action<HttpStatusCode>>()))
                 .Returns(GetAppOpenMock);
 
             var danish = new TranslationData();
@@ -113,7 +113,7 @@ namespace NStack.SDK.Tests
             DataMetaWrapper<TranslationData> resource = await _service.GetResourceAsync<TranslationData>(LanguageLocale, NStackPlatform.Web, "1.0.0");
             DataMetaWrapper<TranslationData> resource2 = await _service.GetResourceAsync<TranslationData>(LanguageLocale, NStackPlatform.Web, "1.0.0");
 
-            _repository.Verify(s => s.DoRequestAsync<DataAppOpenWrapper>(It.IsAny<IRestRequest>(), It.IsAny<Action<HttpStatusCode>>()), Times.Once());
+            _repository.Verify(s => s.DoRequestAsync<DataAppOpenWrapper>(It.IsAny<RestRequest>(), It.IsAny<Action<HttpStatusCode>>()), Times.Once());
             _localizeService.Verify(s => s.GetResourceAsync<TranslationData>(LanguageId), Times.Once());
         }
 
@@ -128,7 +128,7 @@ namespace NStack.SDK.Tests
 
             DataMetaWrapper<TranslationData> resource2 = await _service.GetResourceAsync<TranslationData>(LanguageLocale, NStackPlatform.Web, "1.0.0");
 
-            _repository.Verify(s => s.DoRequestAsync<DataAppOpenWrapper>(It.IsAny<IRestRequest>(), It.IsAny<Action<HttpStatusCode>>()), Times.Exactly(2));
+            _repository.Verify(s => s.DoRequestAsync<DataAppOpenWrapper>(It.IsAny<RestRequest>(), It.IsAny<Action<HttpStatusCode>>()), Times.Exactly(2));
             _localizeService.Verify(s => s.GetResourceAsync<TranslationData>(LanguageId), Times.Exactly(2));
         }
 
@@ -147,7 +147,7 @@ namespace NStack.SDK.Tests
 
             DataMetaWrapper<TranslationData> resource3 = await _service.GetResourceAsync<TranslationData>(LanguageLocale, NStackPlatform.Web, "1.0.0");
 
-            _repository.Verify(s => s.DoRequestAsync<DataAppOpenWrapper>(It.IsAny<IRestRequest>(), It.IsAny<Action<HttpStatusCode>>()), Times.Exactly(3));
+            _repository.Verify(s => s.DoRequestAsync<DataAppOpenWrapper>(It.IsAny<RestRequest>(), It.IsAny<Action<HttpStatusCode>>()), Times.Exactly(3));
             _localizeService.Verify(s => s.GetResourceAsync<TranslationData>(LanguageId), Times.Exactly(2));
         }
         #endregion
@@ -177,7 +177,7 @@ namespace NStack.SDK.Tests
             DataMetaWrapper<TranslationData> resource = await _service.GetDefaultResourceAsync<TranslationData>(NStackPlatform.Web, "1.0.0");
             DataMetaWrapper<TranslationData> resource2 = await _service.GetDefaultResourceAsync<TranslationData>(NStackPlatform.Web, "1.0.0");
 
-            _repository.Verify(s => s.DoRequestAsync<DataAppOpenWrapper>(It.IsAny<IRestRequest>(), It.IsAny<Action<HttpStatusCode>>()), Times.Once());
+            _repository.Verify(s => s.DoRequestAsync<DataAppOpenWrapper>(It.IsAny<RestRequest>(), It.IsAny<Action<HttpStatusCode>>()), Times.Once());
             _localizeService.Verify(s => s.GetResourceAsync<TranslationData>(LanguageId), Times.Once());
         }
 
@@ -192,7 +192,7 @@ namespace NStack.SDK.Tests
 
             DataMetaWrapper<TranslationData> resource2 = await _service.GetDefaultResourceAsync<TranslationData>(NStackPlatform.Web, "1.0.0");
 
-            _repository.Verify(s => s.DoRequestAsync<DataAppOpenWrapper>(It.IsAny<IRestRequest>(), It.IsAny<Action<HttpStatusCode>>()), Times.Exactly(2));
+            _repository.Verify(s => s.DoRequestAsync<DataAppOpenWrapper>(It.IsAny<RestRequest>(), It.IsAny<Action<HttpStatusCode>>()), Times.Exactly(2));
             _localizeService.Verify(s => s.GetResourceAsync<TranslationData>(LanguageId), Times.Exactly(2));
         }
 
@@ -211,7 +211,7 @@ namespace NStack.SDK.Tests
 
             DataMetaWrapper<TranslationData> resource3 = await _service.GetDefaultResourceAsync<TranslationData>(NStackPlatform.Web, "1.0.0");
 
-            _repository.Verify(s => s.DoRequestAsync<DataAppOpenWrapper>(It.IsAny<IRestRequest>(), It.IsAny<Action<HttpStatusCode>>()), Times.Exactly(3));
+            _repository.Verify(s => s.DoRequestAsync<DataAppOpenWrapper>(It.IsAny<RestRequest>(), It.IsAny<Action<HttpStatusCode>>()), Times.Exactly(3));
             _localizeService.Verify(s => s.GetResourceAsync<TranslationData>(LanguageId), Times.Exactly(2));
         }
         #endregion

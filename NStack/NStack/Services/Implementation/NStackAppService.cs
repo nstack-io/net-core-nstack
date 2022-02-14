@@ -40,7 +40,7 @@ namespace NStack.SDK.Services.Implementation
             if (productionEnvironment && developmentEnvironment)
                 throw new ArgumentException($"{nameof(productionEnvironment)} and {nameof(developmentEnvironment)} can't both be true");
 
-            var request = new RestRequest("api/v2/open", Method.POST);
+            var request = new RestRequest("api/v2/open", Method.Post);
             request.AddHeader("N-Meta", $"{GetPlatformString(platform)};{environment};");
 
             request.AddJsonBody(new

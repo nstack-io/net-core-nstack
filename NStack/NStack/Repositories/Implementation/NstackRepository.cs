@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using NStack.SDK.Models;
 using RestSharp;
-using RestSharp.Deserializers;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -27,12 +26,9 @@ namespace NStack.SDK.Repositories.Implementation
             if (string.IsNullOrWhiteSpace(configuration.BaseUrl))
                 throw new ArgumentNullException(configuration.BaseUrl);
 
-            Client = new RestClient(new Uri(configuration.BaseUrl));
+            var options = new RestClientOptions(configuration.BaseUrl);
 
-            Client.AddHandler("application/json", () =>
-            {
-                return new JsonSerializer();
-            });
+            Client = new RestClient(options);
 
             Client.AddDefaultHeader("X-Application-Id", configuration.ApplicationId);
             Client.AddDefaultHeaders(new Dictionary<string, string>
@@ -42,7 +38,7 @@ namespace NStack.SDK.Repositories.Implementation
             });
         }
 
-        async Task<T> INStackRepository.DoRequestAsync<T>(IRestRequest request, Action<HttpStatusCode> errorHandling)
+        async Task<T> INStackRepository.DoRequestAsync<T>(RestRequest request, Action<HttpStatusCode> errorHandling)
         {
             var resp = await Client.ExecuteAsync<T>(request);
             var code = (int)resp.StatusCode;
@@ -54,14 +50,6 @@ namespace NStack.SDK.Repositories.Implementation
             }
 
             return resp.Data;
-        }
-    }
-
-    public class JsonSerializer : IDeserializer
-    {
-        public virtual T Deserialize<T>(IRestResponse response)
-        {
-            return JsonConvert.DeserializeObject<T>(response.Content);
         }
     }
 }
