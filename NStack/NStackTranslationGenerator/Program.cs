@@ -1,45 +1,42 @@
-﻿using CommandLine;
+﻿namespace NStackTranslationGenerator;
 
-namespace NStackTranslationGenerator
+public class Program
 {
-    public class Program
+    private static Options Options { get; set; } = new Options();
+    private static bool Parsed { get; set; } = false;
+
+    public static async Task Main(string[] args)
     {
-        private static Options Options { get; set; }
-        private static bool Parsed { get; set; } = false;
+        var options = Parser.Default.ParseArguments<Options>(args)
+            .WithParsed(SaveOptions)
+            .WithNotParsed(HandleErrors);
 
-        public static async Task Main(string[] args)
+        if (!Parsed)
         {
-            var options = Parser.Default.ParseArguments<Options>(args)
-                .WithParsed(SaveOptions)
-                .WithNotParsed(HandleErrors);
+            return;
+        }
 
-            if (!Parsed)
+        var translator = new Translator(Options);
+
+        await translator.PerformTranslation();
+    }
+
+    private static void SaveOptions(Options opts)
+    {
+        Options = opts;
+        Parsed = true;
+    }
+
+    private static void HandleErrors(IEnumerable<Error> errors)
+    {
+        foreach (var error in errors)
+        {
+            if(error is MissingRequiredOptionError missing)
             {
-                return;
+                Console.WriteLine($"Missing argument {missing.NameInfo.NameText}");
             }
-
-            var translator = new Translator(Options);
-
-            await translator.PerformTranslation();
         }
 
-        private static void SaveOptions(Options opts)
-        {
-            Options = opts;
-            Parsed = true;
-        }
-
-        private static void HandleErrors(IEnumerable<Error> errors)
-        {
-            foreach (var error in errors)
-            {
-                if(error is MissingRequiredOptionError missing)
-                {
-                    Console.WriteLine($"Missing argument {missing.NameInfo.NameText}");
-                }
-            }
-
-            Parsed = false;
-        }
+        Parsed = false;
     }
 }

@@ -1,6 +1,4 @@
-﻿using NStack.SDK.Models;
-using RestSharp;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace NStackTranslationGenerator
 {

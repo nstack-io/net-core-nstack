@@ -25,7 +25,7 @@ public class TermsTests
     {
         var terms = new Terms
         {
-            PublishedAtString = null
+            PublishedAtString = string.Empty
         };
 
         var publishedAt = terms.PublishedAt;
